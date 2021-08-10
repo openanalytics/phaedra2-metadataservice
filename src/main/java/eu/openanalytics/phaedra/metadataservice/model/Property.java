@@ -26,10 +26,4 @@ public class Property {
     @Column("property_value")
     @NotNull
     private String propertyValue;
-
-    public Property(Long objectId, String objectClass, String propertyName) {
-        this.objectId = objectId;
-        this.objectClass = objectClass;
-        this.propertyName = propertyName;
-    }
 }

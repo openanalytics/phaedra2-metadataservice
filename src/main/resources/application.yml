@@ -1,11 +1,18 @@
 server:
   servlet:
     context-path: /phaedra/metadata-service
-  port: 3030
+  port: 3002
 
 spring:
-    datasource:
-        driver-class-name: org.postgresql.Driver
-        url: jdbc:postgresql://localhost:5432/phaedra2?currentSchema=metadata
-        username: phaedra_usr
-        password: phaedra_usr
+  application:
+    name: PHAEDRA-METADATA-SERVICE
+  jackson:
+    serialization:
+      indent_output: true
+
+eureka:
+  instance:
+    appname: ${spring.application.name}
+  client:
+    service-url:
+      defaultZone: ${SERVICE_REGISTRY}

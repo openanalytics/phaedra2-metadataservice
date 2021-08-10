@@ -30,10 +30,9 @@ public class Tag {
     }
 
     public void removeObject(Long objectId, String objectClass) {
-        Set<TaggedObject> toBeRemoved = taggedObjects.stream().filter(to -> {
-            return (to.getObjectId().equals(objectId) && to.getObjectClass().equals(objectClass));
-        }).collect(Collectors.toSet());
-
+        Set<TaggedObject> toBeRemoved = taggedObjects.stream()
+                .filter(to -> (to.getObjectId().equals(objectId) && to.getObjectClass().equals(objectClass)))
+                .collect(Collectors.toSet());
         taggedObjects.removeAll(toBeRemoved);
     }
 }

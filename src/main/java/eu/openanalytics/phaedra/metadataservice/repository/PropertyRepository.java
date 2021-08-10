@@ -21,4 +21,7 @@ public interface PropertyRepository extends CrudRepository<Property, Long> {
 
     @Query("select * from metadata.hca_property as p where p.property_name = :propertyName")
     List<Property> findAvailablePropertiesByByPropertyName(String propertyName);
+
+    @Query("select * from metadata.hca_property as p where p.property_name = :propertyName and p.object_id = :objectId")
+    Property findPropertyByPropertyNameAndObjectId(String propertyName, Long objectId);
 }
