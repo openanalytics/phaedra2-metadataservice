@@ -1,4 +1,5 @@
 create schema if not exists metadata;
+grant usage on schema metadata to phaedra2;
 
 create table if not exists metadata.hca_property
 (
@@ -26,3 +27,7 @@ create table if not exists metadata.hca_tagged_object
     primary key (object_id, object_class, tag_id),
     foreign key (tag_id) references metadata.hca_tag (id) on update cascade
 );
+
+grant all on table metadata.hca_property to phaedra2;
+grant all on table metadata.hca_tag to phaedra2;
+grant all on table metadata.hca_tagged_object to phaedra2;
