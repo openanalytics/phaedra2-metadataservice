@@ -17,8 +17,8 @@
     <properties>
         <java.version>11</java.version>
         <spring-cloud.version>2020.0.3</spring-cloud.version>
-        <docker.image.prefix></docker.image.prefix>
-        <docker.image.name>${project.artifactId}</docker.image.name>
+        <docker.repoPrefix/>
+        <docker.imageName>${project.artifactId}</docker.imageName>
     </properties>
 
     <dependencies>
@@ -67,7 +67,7 @@
                     <verbose>true</verbose>
                     <images>
                         <image>
-                            <name>${docker.image.prefix}${docker.image.name}</name>
+                            <name>${docker.repoPrefix}${docker.imageName}</name>
                             <build>
                                 <dockerFile>${project.basedir}/Dockerfile.app</dockerFile>
                                 <tags>
@@ -76,7 +76,7 @@
                             </build>
                         </image>
                         <image>
-                            <name>${docker.image.prefix}${docker.image.name}.liquibase</name>
+                            <name>${docker.repoPrefix}${docker.imageName}.liquibase</name>
                             <build>
                                 <dockerFile>${project.basedir}/Dockerfile.db</dockerFile>
                                 <tags>
