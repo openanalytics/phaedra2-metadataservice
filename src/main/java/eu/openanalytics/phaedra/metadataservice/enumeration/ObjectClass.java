@@ -4,5 +4,6 @@ public enum ObjectClass {
     WELL,
     PLATE,
     FEATURE,
-    PROTOCOL
+    PROTOCOL,
+    PROJECT
 }
