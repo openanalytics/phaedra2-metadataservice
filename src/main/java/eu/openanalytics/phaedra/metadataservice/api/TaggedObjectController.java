@@ -28,7 +28,8 @@ public class TaggedObjectController {
     @GetMapping(value = "/{objectClass}", params = {"objectId"})
     public ResponseEntity getTaggedObjectByIdAndClass(@PathVariable("objectClass") ObjectClass objectClass,
                                                       @RequestParam(value = "objectId", required = false) Long objectId) {
-        TaggedObjectDTO response = taggedObjectService.findTaggedObjectByObjectIdAndObjectClass(objectId, objectClass);
+        List<TaggedObjectDTO> response = new ArrayList<>();
+        response.addAll(taggedObjectService.findTaggedObjectByObjectIdAndObjectClass(objectId, objectClass));
         return new ResponseEntity(response, HttpStatus.OK);
     }
 

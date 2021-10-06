@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface TaggedObjectRepository extends CrudRepository<TaggedObject, Long> {
     @Query("select * from metadata.hca_tagged_object hto where hto.object_id = :objectId and hto.object_class = :objectClass")
-    TaggedObject findTaggedObjectByObjectIdAndObjectClass(Long objectId, String objectClass);
+    List<TaggedObject> findTaggedObjectByObjectIdAndObjectClass(Long objectId, String objectClass);
 
     @Query("select * from metadata.hca_tagged_object hto where hto.object_class = :objectClass")
     List<TaggedObject> findAllByObjectClass(String objectClass);

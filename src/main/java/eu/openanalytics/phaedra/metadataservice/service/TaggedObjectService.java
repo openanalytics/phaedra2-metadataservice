@@ -26,9 +26,9 @@ public class TaggedObjectService {
         return result.stream().map(to -> mapToTaggedObjectDTO(to)).collect(Collectors.toList());
     }
 
-    public TaggedObjectDTO findTaggedObjectByObjectIdAndObjectClass(Long objectId, ObjectClass objectClass) {
-        TaggedObject result = taggedObjectRepository.findTaggedObjectByObjectIdAndObjectClass(objectId, objectClass.name());
-        return mapToTaggedObjectDTO(result);
+    public List<TaggedObjectDTO> findTaggedObjectByObjectIdAndObjectClass(Long objectId, ObjectClass objectClass) {
+        List<TaggedObject> result = taggedObjectRepository.findTaggedObjectByObjectIdAndObjectClass(objectId, objectClass.name());
+        return result.stream().map(to -> mapToTaggedObjectDTO(to)).collect(Collectors.toList());
     }
 
     /**
