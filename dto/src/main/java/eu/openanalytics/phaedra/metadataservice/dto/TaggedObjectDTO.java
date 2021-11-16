@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import lombok.Data;
 
-import java.util.Set;
-
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TaggedObjectDTO {
