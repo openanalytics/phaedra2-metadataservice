@@ -61,8 +61,7 @@ public class PropertyRepositoryTest {
         List<Property> filteredProperties = propertyRepository.findAll(filterDTO.getObjectId(), filterDTO.getPropertyName(), filterDTO.getObjectClass());
         assertThat(filteredProperties).isNotNull();
         assertThat(filteredProperties).isNotEmpty();
-        assertThat(filteredProperties.size() == 1).isTrue();
-        assertThat(filteredProperties.get(0).getObjectId() == 1000L);
+        assertThat(filteredProperties.size() == 6).isTrue();
     }
 
     @Test
