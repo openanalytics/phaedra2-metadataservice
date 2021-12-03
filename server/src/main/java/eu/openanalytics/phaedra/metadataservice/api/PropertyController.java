@@ -1,6 +1,7 @@
 package eu.openanalytics.phaedra.metadataservice.api;
 
 import eu.openanalytics.phaedra.metadataservice.dto.PropertyDTO;
+import eu.openanalytics.phaedra.metadataservice.dto.PropertyFilterDTO;
 import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.metadataservice.model.Property;
 import eu.openanalytics.phaedra.metadataservice.service.PropertyService;
@@ -56,57 +57,18 @@ public class PropertyController {
     }
 
     /**
-     * Get all properties for a specific object
-     * @param objectId The id of the object
-     * @return List of properties for a given object
+     * Get all properties filtered by the request pqrameters
+     * @param propertyName The property name (Optional)
+     * @param objectId The object id (Optional)
+     * @param objectClass The object class (Optional)
+     * @return Properties value
      */
-    @GetMapping(path = "/properties", params = {"objectId"})
-    public ResponseEntity getPropertiesByObjectId(@RequestParam(value = "objectId", required = false) Long objectId) {
-        List<Property> result = metadataService.getPropertiesByObjectId(objectId);
-        return new ResponseEntity(result, HttpStatus.OK);
-    }
-
-    /**
-     * Get a property value for specific property and object
-     * @param propertyName The property name
-     * @param objectId The object id
-     * @return Property value for a given property and object
-     */
-    @GetMapping(path = "/properties", params = {"propertyName", "objectId"})
-    public ResponseEntity getPropertyByPropertyNameAndObjectId(@RequestParam(value = "propertyName", required = false) String propertyName, @RequestParam(value = "objectId", required = false) Long objectId) {
-        Property result = metadataService.getPropertyByPropertyNameAndObjectId(propertyName, objectId);
-        return new ResponseEntity(result, HttpStatus.OK);
-    }
-
-    /**
-     * Get all available properties
-     * @return
-     */
-    @GetMapping("/properties")
-    public ResponseEntity getAvailableProperties() {
-        List<PropertyDTO> result = metadataService.getAvailableProperties();
-        return new ResponseEntity(result, HttpStatus.OK);
-    }
-
-    /**
-     * Get available properties for a specific object class
-     * @param objectClass
-     * @return
-     */
-    @GetMapping(path = "/properties", params = {"objectClass"})
-    public ResponseEntity getAvailablePropertiesByObjectClass(@RequestParam(value = "objectClass", required = false) ObjectClass objectClass) {
-        List<PropertyDTO> result = metadataService.getAvailablePropertiesByObjectClass(objectClass.name());
-        return new ResponseEntity(result, HttpStatus.OK);
-    }
-
-    /**
-     * Get available properties with the same property name
-     * @param propertyName
-     * @return
-     */
-    @GetMapping(path = "/properties", params = {"propertyName"})
-    public ResponseEntity getAvailablePropertiesByPropertyName(@RequestParam(value = "propertyName", required = false) String propertyName) {
-        List<PropertyDTO> result = metadataService.getAvailablePropertiesByPropertyName(propertyName);
+    @GetMapping(path = "/properties", params = {"propertyName", "objectId", "objectClass"})
+    public ResponseEntity getProperties(@RequestParam(value = "propertyName", required = false) String propertyName,
+                                       @RequestParam(value = "objectId", required = false) Long objectId,
+                                       @RequestParam(value = "objectClass", required = false) ObjectClass objectClass) {
+        PropertyFilterDTO propertyFilter = new PropertyFilterDTO(propertyName, objectId, objectClass);
+        List<PropertyDTO> result = metadataService.getProperties(propertyFilter);
         return new ResponseEntity(result, HttpStatus.OK);
     }
  }

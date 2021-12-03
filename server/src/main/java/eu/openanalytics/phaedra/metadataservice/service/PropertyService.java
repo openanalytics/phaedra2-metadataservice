@@ -1,6 +1,7 @@
 package eu.openanalytics.phaedra.metadataservice.service;
 
 import eu.openanalytics.phaedra.metadataservice.dto.PropertyDTO;
+import eu.openanalytics.phaedra.metadataservice.dto.PropertyFilterDTO;
 import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.metadataservice.model.Property;
 import eu.openanalytics.phaedra.metadataservice.repository.PropertyRepository;
@@ -14,8 +15,13 @@ import java.util.stream.Collectors;
 @Service
 public class PropertyService {
 
-    @Autowired
     private PropertyRepository propertyRepository;
+    private final ModelMapper modelMapper;
+
+    public PropertyService(PropertyRepository propertyRepository, ModelMapper modelMapper) {
+        this.propertyRepository = propertyRepository;
+        this.modelMapper = modelMapper;
+    }
 
     public void createProperty(Property property) {
         propertyRepository.save(property);
@@ -29,50 +35,9 @@ public class PropertyService {
         propertyRepository.save(property);
     }
 
-    public List<Property> getPropertiesByObjectId(Long objectId) {
-        return propertyRepository.findAllByObjectId(objectId);
-    }
-
-    public Property getPropertyByPropertyNameAndObjectId(String propertyName, Long objectId) {
-        return propertyRepository.findPropertyByPropertyNameAndObjectId(propertyName, objectId);
-    }
-
-    public List<PropertyDTO> getAvailableProperties() {
-        List<PropertyDTO> result = propertyRepository.findAvailableProperties().stream()
-                .map(p -> {
-                    PropertyDTO propertyDTO = new PropertyDTO();
-                    propertyDTO.setPropertyName(p.getPropertyName());
-                    propertyDTO.setPropertyValue(p.getPropertyValue());
-                    propertyDTO.setObjectId(p.getObjectId());
-                    propertyDTO.setObjectClass(ObjectClass.valueOf(p.getObjectClass()));
-                    return propertyDTO;
-                }).collect(Collectors.toList());
-        return result;
-    }
-
-    public List<PropertyDTO> getAvailablePropertiesByObjectClass(String objectClass) {
-        List<PropertyDTO> result = propertyRepository.findAvailablePropertiesByObjectClass(objectClass).stream()
-                .map(p -> {
-                    PropertyDTO propertyDTO = new PropertyDTO();
-                    propertyDTO.setPropertyName(p.getPropertyName());
-                    propertyDTO.setPropertyValue(p.getPropertyValue());
-                    propertyDTO.setObjectId(p.getObjectId());
-                    propertyDTO.setObjectClass(ObjectClass.valueOf(p.getObjectClass()));
-                    return propertyDTO;
-                }).collect(Collectors.toList());
-        return result;
-    }
-
-    public List<PropertyDTO> getAvailablePropertiesByPropertyName(String propertyName) {
-        List<PropertyDTO> result = propertyRepository.findAvailablePropertiesByByPropertyName(propertyName).stream()
-                .map(p -> {
-                    PropertyDTO propertyDTO = new PropertyDTO();
-                    propertyDTO.setPropertyName(p.getPropertyName());
-                    propertyDTO.setPropertyValue(p.getPropertyValue());
-                    propertyDTO.setObjectId(p.getObjectId());
-                    propertyDTO.setObjectClass(ObjectClass.valueOf(p.getObjectClass()));
-                    return propertyDTO;
-                }).collect(Collectors.toList());
-        return result;
+    public List<PropertyDTO> getProperties(PropertyFilterDTO filterDTO) {
+        List<Property> result = propertyRepository.findAll(filterDTO.getObjectId(), filterDTO.getPropertyName(), filterDTO.getObjectClass());
+        return result.stream().map(modelMapper::map)
+                .collect(Collectors.toList());
     }
 }

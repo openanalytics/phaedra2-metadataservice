@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: sberberovic
+      changes:
+        - sql:
+            sql: create type objectclass as enum ('WELL','PLATE','EXPERIMENT','FEATURE','PROTOCOL','PROJECT')
+        - sql:
+            sql: create cast (character varying as objectclass) with inout as implicit
+        - sql:
+            sql: alter table hca_property alter column object_class type objectclass using object_class::objectclass
