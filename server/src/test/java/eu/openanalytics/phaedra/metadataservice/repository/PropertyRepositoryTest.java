@@ -1,0 +1,97 @@
+package eu.openanalytics.phaedra.metadataservice.repository;
+
+import eu.openanalytics.phaedra.metadataservice.dto.PropertyFilterDTO;
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
+import eu.openanalytics.phaedra.metadataservice.model.Property;
+import eu.openanalytics.phaedra.metadataservice.support.Containers;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
+import org.testcontainers.containers.JdbcDatabaseContainer;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@Testcontainers
+@SpringBootTest
+@Sql({"/jdbc/test-data.sql"})
+@TestPropertySource(locations = "classpath:application-test.properties")
+public class PropertyRepositoryTest {
+
+    @Autowired
+    private PropertyRepository propertyRepository;
+
+    @Container
+    private static JdbcDatabaseContainer postgreSQLContainer = new PostgreSQLContainer("postgres:13-alpine")
+            .withDatabaseName("phaedra2")
+            .withUrlParam("currentSchema","metadata")
+            .withPassword("inmemory")
+            .withUsername("inmemory");
+
+    @DynamicPropertySource
+    static void registerPgProperties(DynamicPropertyRegistry registry) {
+        registry.add("DB_URL", Containers.postgreSQLContainer::getJdbcUrl);
+        registry.add("DB_USER", Containers.postgreSQLContainer::getUsername);
+        registry.add("DB_PASSWORD", Containers.postgreSQLContainer::getPassword);
+    }
+
+    @Test
+    public void contextLoads() {
+        assertThat(propertyRepository).isNotNull();
+    }
+
+    @Test
+    public void getProperties() {
+        Iterable<Property> allProperties = propertyRepository.findAll();
+        assertThat(allProperties).isNotNull();
+        assertThat(allProperties).isNotEmpty();
+    }
+
+    @Test
+    public void queryProperties1() {
+        PropertyFilterDTO filterDTO = new PropertyFilterDTO(null, 1000L, null);
+        List<Property> filteredProperties = propertyRepository.findAll(filterDTO.getObjectId(), filterDTO.getPropertyName(), filterDTO.getObjectClass());
+        assertThat(filteredProperties).isNotNull();
+        assertThat(filteredProperties).isNotEmpty();
+        assertThat(filteredProperties.size() == 1).isTrue();
+        assertThat(filteredProperties.get(0).getObjectId() == 1000L);
+    }
+
+    @Test
+    public void queryProperties2() {
+        PropertyFilterDTO filterDTO = new PropertyFilterDTO(null, null, ObjectClass.PROTOCOL);
+        List<Property> result1 = propertyRepository.findAll(filterDTO.getObjectId(), filterDTO.getPropertyName(), filterDTO.getObjectClass());
+        assertThat(result1).isNotNull();
+        assertThat(result1).isNotEmpty();
+        assertThat(result1.size() == 3).isTrue();
+
+        filterDTO.setObjectClass(ObjectClass.PROJECT);
+        List<Property> result2 = propertyRepository.findAll(filterDTO.getObjectId(), filterDTO.getPropertyName(), filterDTO.getObjectClass());
+        assertThat(result2).isNotNull();
+        assertThat(result2).isNotEmpty();
+        assertThat(result2.size() == 3).isTrue();
+
+        filterDTO.setObjectClass(ObjectClass.WELL);
+        List<Property> result3 = propertyRepository.findAll(filterDTO.getObjectId(), filterDTO.getPropertyName(), filterDTO.getObjectClass());
+        assertThat(result3).isNotNull();
+        assertThat(result3).isNotEmpty();
+        assertThat(result3.size() == 3).isTrue();
+    }
+
+    @Test
+    public void queryProperties3() {
+        PropertyFilterDTO filterDTO = new PropertyFilterDTO("NumberOfFeatures", null, null);
+        List<Property> filteredProperties = propertyRepository.findAll(filterDTO.getObjectId(), filterDTO.getPropertyName(), filterDTO.getObjectClass());
+        assertThat(filteredProperties).isNotNull();
+        assertThat(filteredProperties).isNotEmpty();
+        assertThat(filteredProperties.size() == 3).isTrue();
+    }
+}
