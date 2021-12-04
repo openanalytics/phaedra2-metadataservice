@@ -22,10 +22,4 @@ public interface PropertyRepository extends CrudRepository<Property, Long> {
             "and (:propertyName is null or p.property_name = :propertyName) " +
             "and (:objectClass is null or p.object_class = cast(:objectClass as objectclass))")
     List<Property> findAll(Long objectId, String propertyName, ObjectClass objectClass);
-
-    @Query("delete from hca_property  " +
-            "where object_id = :objectId " +
-            "and property_name = :propertyName " +
-            "and object_class = cast(:objectClass as objectclass)")
-    void deleteByObjectIdAndPropertyNameAndObjectClass(Long objectId, String propertyName, ObjectClass objectClass);
 }

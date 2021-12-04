@@ -11,13 +11,19 @@ import java.util.List;
 @Repository
 public interface TagRepository extends CrudRepository<Tag, Long> {
 
-//    @Query("select * from metadata.hca_tag as ht where ht.name = :tagName")
     Tag findByName(String tagName);
 
-    @Query("select * from metadata.hca_tag as ht inner join hca_tagged_object as hto on ht.id = hto.tag_id where hto.object_id = :objectId")
-    List<Tag> findByTaggedObjectId(Long objectId);
+    @Query("select * from hca_tag as ht inner join hca_tagged_object as hto on ht.id = hto.tag_id " +
+            "where hto.object_id = :objectId")
+    List<Tag> findByObjectId(Long objectId);
 
-    @Query("select * from metadata.hca_tag as ht inner join hca_tagged_object as hto on ht.id = hto.tag_id where hto.object_class = :objectClass")
-    List<Tag> findByTaggedObjectClass(String objectClass);
+    @Query("select * from hca_tag as ht inner join hca_tagged_object as hto on ht.id = hto.tag_id " +
+            "where hto.object_class = cast(:objectClass as objectclass)")
+    List<Tag> findByObjectClass(ObjectClass objectClass);
+
+    @Query("select * from hca_tag as ht inner join hca_tagged_object as hto on ht.id = hto.tag_id " +
+            "where hto.object_id = :objectId " +
+            "and hto.object_class = cast(:objectClass as objectclass)")
+    List<Tag> findByObjectIdAndObjectClass(Long objectId, ObjectClass objectClass);
 
 }

@@ -30,12 +30,17 @@ public class PropertyController {
 
     /**
      * Delete an existing property
-     * @param property
+     * @param propertyName
+     * @param objectId
+     * @param objectClass
+     * @return
      */
     @DeleteMapping("/property")
-    public ResponseEntity deleteProperty(@RequestBody @Valid PropertyDTO property) {
-        metadataService.deleteProperty(property);
-        return new ResponseEntity(property, HttpStatus.OK);
+    public ResponseEntity deleteProperty(@RequestParam(value = "propertyName") String propertyName,
+                                         @RequestParam(value = "objectId") Long objectId,
+                                         @RequestParam(value = "objectClass") ObjectClass objectClass) {
+        PropertyDTO deletedProperty = metadataService.deleteProperty(propertyName, objectId, objectClass);
+        return new ResponseEntity(deletedProperty, HttpStatus.OK);
     }
 
     /**
@@ -49,12 +54,17 @@ public class PropertyController {
     }
 
     /**
-     * Update a property
-     * @param property
+     * Get a property
+     * @param propertyName
+     * @param objectId
+     * @param objectClass
+     * @return
      */
     @GetMapping("/property")
-    public ResponseEntity getProperty(@RequestBody @Valid PropertyDTO property) {
-        PropertyDTO existing = metadataService.getProperty(property);
+    public ResponseEntity getProperty(@RequestParam(value = "propertyName") String propertyName,
+                                      @RequestParam(value = "objectId") Long objectId,
+                                      @RequestParam(value = "objectClass") ObjectClass objectClass) {
+        PropertyDTO existing = metadataService.getProperty(propertyName, objectId, objectClass);
         return new ResponseEntity(existing, HttpStatus.OK);
     }
 

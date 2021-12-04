@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PropertyDTO {
-    private Long id;
     private String propertyName;
     private String propertyValue;
     private Long objectId;

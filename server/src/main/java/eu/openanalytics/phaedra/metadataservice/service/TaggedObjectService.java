@@ -22,12 +22,12 @@ public class TaggedObjectService {
     private TagRepository tagRepository;
 
     public List<TaggedObjectDTO> findAllTaggedObjectsByObjectClass(ObjectClass objectClass) {
-        List<TaggedObject> result = taggedObjectRepository.findAllByObjectClass(objectClass.name());
+        List<TaggedObject> result = taggedObjectRepository.findAllByObjectClass(objectClass);
         return result.stream().map(to -> mapToTaggedObjectDTO(to)).collect(Collectors.toList());
     }
 
     public List<TaggedObjectDTO> findTaggedObjectByObjectIdAndObjectClass(Long objectId, ObjectClass objectClass) {
-        List<TaggedObject> result = taggedObjectRepository.findTaggedObjectByObjectIdAndObjectClass(objectId, objectClass.name());
+        List<TaggedObject> result = taggedObjectRepository.findTaggedObjectByObjectIdAndObjectClass(objectId, objectClass);
         return result.stream().map(to -> mapToTaggedObjectDTO(to)).collect(Collectors.toList());
     }
 

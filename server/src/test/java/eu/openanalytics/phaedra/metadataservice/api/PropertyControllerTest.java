@@ -47,7 +47,7 @@ public class PropertyControllerTest {
 
     @Test
     public void createProperty() throws Exception {
-        PropertyDTO property = new PropertyDTO(null, "ProtocolProperty1", "Newly created protocol", 1001L, ObjectClass.PROTOCOL);
+        PropertyDTO property = new PropertyDTO("ProtocolProperty1", "Newly created protocol", 1001L, ObjectClass.PROTOCOL);
 
         String requestBody = objectMapper.writeValueAsString(property);
         MvcResult mvcResult = this.mockMvc.perform(post("/property").contentType(MediaType.APPLICATION_JSON).content(requestBody))
@@ -67,7 +67,9 @@ public class PropertyControllerTest {
 
         String requestBody = objectMapper.writeValueAsString(propertyDTO);
         MvcResult mvcResult = this.mockMvc.perform(delete("/property")
-                        .contentType(MediaType.APPLICATION_JSON).content(requestBody))
+                        .param("propertyName", propertyDTO.getPropertyName())
+                        .param("objectId", String.valueOf(propertyDTO.getObjectId()))
+                        .param("objectClass", propertyDTO.getObjectClass().name()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -81,24 +83,27 @@ public class PropertyControllerTest {
 
     @Test
     public void updateProperty() throws Exception {
-        PropertyDTO propertyDTO = new PropertyDTO("NumberOfFeatures", 2000L, ObjectClass.PROTOCOL);
+        String propertyName = "NumberOfFeatures";
+        Long objectId = 2000L;
+        ObjectClass objectClass = ObjectClass.PROTOCOL;
 
-        String requestBody = objectMapper.writeValueAsString(propertyDTO);
-        MvcResult mvcResult = this.mockMvc.perform(get("/property").contentType(MediaType.APPLICATION_JSON)
-                    .content(requestBody))
+        MvcResult mvcResult = this.mockMvc.perform(get("/property")
+                        .param("propertyName", propertyName)
+                        .param("objectId", String.valueOf(objectId))
+                        .param("objectClass", objectClass.name()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
 
         PropertyDTO existingPropertyDTO = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), PropertyDTO.class);
         assertThat(existingPropertyDTO).isNotNull();
-        assertThat(existingPropertyDTO.getPropertyName()).isEqualTo(propertyDTO.getPropertyName());
-        assertThat(existingPropertyDTO.getObjectId()).isEqualTo(propertyDTO.getObjectId());
-        assertThat(existingPropertyDTO.getObjectClass()).isEqualTo(propertyDTO.getObjectClass());
+        assertThat(existingPropertyDTO.getPropertyName()).isEqualTo(propertyName);
+        assertThat(existingPropertyDTO.getObjectId()).isEqualTo(objectId);
+        assertThat(existingPropertyDTO.getObjectClass()).isEqualTo(objectClass);
 
         existingPropertyDTO.setPropertyValue("15");
 
-        requestBody = objectMapper.writeValueAsString(existingPropertyDTO);
+        String requestBody = objectMapper.writeValueAsString(existingPropertyDTO);
         mvcResult = this.mockMvc.perform(put("/property").contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andDo(print())
                 .andExpect(status().isOk())

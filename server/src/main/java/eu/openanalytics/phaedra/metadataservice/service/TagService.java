@@ -37,12 +37,18 @@ public class TagService {
     }
 
     public List<Tag> getTagsByObjectId(Long objectId) {
-        List<Tag> result = tagRepository.findByTaggedObjectId(objectId);
+        List<Tag> result = tagRepository.findByObjectId(objectId);
         return result;
     }
 
     public List<Tag> getTagsByObjectClass(ObjectClass objectClass) {
-        List<Tag> result = tagRepository.findByTaggedObjectClass(objectClass.name());
+        List<Tag> result = tagRepository.findByObjectClass(objectClass);
         return result;
     }
+
+    public List<Tag> getTagsByObjectIdAndObjectClass(Long objectId, ObjectClass objectClass) {
+        List<Tag> result = tagRepository.findByObjectIdAndObjectClass(objectId, objectClass);
+        return result;
+    }
+
 }
