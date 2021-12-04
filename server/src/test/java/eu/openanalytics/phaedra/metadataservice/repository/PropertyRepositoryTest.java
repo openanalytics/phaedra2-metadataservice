@@ -1,6 +1,5 @@
 package eu.openanalytics.phaedra.metadataservice.repository;
 
-import eu.openanalytics.phaedra.metadataservice.dto.PropertyFilterDTO;
 import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.metadataservice.model.Property;
 import eu.openanalytics.phaedra.metadataservice.support.Containers;
@@ -57,8 +56,7 @@ public class PropertyRepositoryTest {
 
     @Test
     public void queryProperties1() {
-        PropertyFilterDTO filterDTO = new PropertyFilterDTO(null, 1000L, null);
-        List<Property> filteredProperties = propertyRepository.findAll(filterDTO.getObjectId(), filterDTO.getPropertyName(), filterDTO.getObjectClass());
+        List<Property> filteredProperties = propertyRepository.findAll(1000L, null, null);
         assertThat(filteredProperties).isNotNull();
         assertThat(filteredProperties).isNotEmpty();
         assertThat(filteredProperties.size() == 6).isTrue();
@@ -66,20 +64,17 @@ public class PropertyRepositoryTest {
 
     @Test
     public void queryProperties2() {
-        PropertyFilterDTO filterDTO = new PropertyFilterDTO(null, null, ObjectClass.PROTOCOL);
-        List<Property> result1 = propertyRepository.findAll(filterDTO.getObjectId(), filterDTO.getPropertyName(), filterDTO.getObjectClass());
+        List<Property> result1 = propertyRepository.findAll(null, null, ObjectClass.PROTOCOL);
         assertThat(result1).isNotNull();
         assertThat(result1).isNotEmpty();
         assertThat(result1.size() == 3).isTrue();
 
-        filterDTO.setObjectClass(ObjectClass.PROJECT);
-        List<Property> result2 = propertyRepository.findAll(filterDTO.getObjectId(), filterDTO.getPropertyName(), filterDTO.getObjectClass());
+        List<Property> result2 = propertyRepository.findAll(null, null, ObjectClass.PROJECT);
         assertThat(result2).isNotNull();
         assertThat(result2).isNotEmpty();
         assertThat(result2.size() == 3).isTrue();
 
-        filterDTO.setObjectClass(ObjectClass.WELL);
-        List<Property> result3 = propertyRepository.findAll(filterDTO.getObjectId(), filterDTO.getPropertyName(), filterDTO.getObjectClass());
+        List<Property> result3 = propertyRepository.findAll(null, null, ObjectClass.WELL);
         assertThat(result3).isNotNull();
         assertThat(result3).isNotEmpty();
         assertThat(result3.size() == 3).isTrue();
@@ -87,10 +82,16 @@ public class PropertyRepositoryTest {
 
     @Test
     public void queryProperties3() {
-        PropertyFilterDTO filterDTO = new PropertyFilterDTO("NumberOfFeatures", null, null);
-        List<Property> filteredProperties = propertyRepository.findAll(filterDTO.getObjectId(), filterDTO.getPropertyName(), filterDTO.getObjectClass());
+        List<Property> filteredProperties = propertyRepository.findAll(null, "NumberOfFeatures", null);
         assertThat(filteredProperties).isNotNull();
         assertThat(filteredProperties).isNotEmpty();
         assertThat(filteredProperties.size() == 3).isTrue();
+    }
+
+    @Test
+    public void queryProperties4() {
+        List<Property> filteredProperties = propertyRepository.findAll(null, null, null);
+        assertThat(filteredProperties).isNotNull();
+        assertThat(filteredProperties).isNotEmpty();
     }
 }

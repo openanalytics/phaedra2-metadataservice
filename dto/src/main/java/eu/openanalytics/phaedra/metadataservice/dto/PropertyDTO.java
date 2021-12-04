@@ -2,15 +2,24 @@ package eu.openanalytics.phaedra.metadataservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PropertyDTO {
+    private Long id;
     private String propertyName;
     private String propertyValue;
     private Long objectId;
     private ObjectClass objectClass;
+
+    public PropertyDTO(String propertyName, Long objectId, ObjectClass objectClass) {
+        this.propertyName = propertyName;
+        this.objectId = objectId;
+        this.objectClass = objectClass;
+    }
 }
