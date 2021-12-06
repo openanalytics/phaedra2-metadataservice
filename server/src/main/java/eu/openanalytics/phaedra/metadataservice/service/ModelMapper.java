@@ -1,7 +1,9 @@
 package eu.openanalytics.phaedra.metadataservice.service;
 
 import eu.openanalytics.phaedra.metadataservice.dto.PropertyDTO;
+import eu.openanalytics.phaedra.metadataservice.dto.TagDTO;
 import eu.openanalytics.phaedra.metadataservice.model.Property;
+import eu.openanalytics.phaedra.metadataservice.model.Tag;
 import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,15 @@ public class ModelMapper {
         };
         modelMapper.addMappings(propertyDTOMap);
 
+        PropertyMap<Tag, TagDTO> tagtoTagDTOMap = new PropertyMap<Tag, TagDTO>() {
+            @Override
+            protected void configure() {
+                map().setTagId(source.getId());
+                map().setTag(source.getName());
+            }
+        };
+        modelMapper.addMappings(tagtoTagDTOMap);
+
         modelMapper.validate(); // ensure that objects can be mapped
     }
 
@@ -40,5 +51,9 @@ public class ModelMapper {
 
     Property map(PropertyDTO propertyDTO) {
         return modelMapper.map(propertyDTO, Property.class);
+    }
+
+    TagDTO map(Tag tag) {
+        return modelMapper.map(tag, TagDTO.class);
     }
 }

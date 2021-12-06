@@ -1,5 +1,6 @@
 package eu.openanalytics.phaedra.metadataservice.service;
 
+import eu.openanalytics.phaedra.metadataservice.dto.TagDTO;
 import eu.openanalytics.phaedra.metadataservice.dto.TaggedObjectDTO;
 import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.metadataservice.model.Tag;
@@ -9,12 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TagService {
 
-    @Autowired
-    private TagRepository tagRepository;
+    private final TagRepository tagRepository;
+    private final ModelMapper modelMapper;
+
+    public TagService(TagRepository tagRepository, ModelMapper modelMapper) {
+        this.tagRepository = tagRepository;
+        this.modelMapper = modelMapper;
+    }
 
     public void addObjectTag(TaggedObjectDTO taggedObjectDTO) {
         Tag tag = tagRepository.findByName(taggedObjectDTO.getTag());
@@ -32,23 +39,24 @@ public class TagService {
         tagRepository.save(tag);
     }
 
-    public List<Tag> getAllTags() {
-        return (List<Tag>) tagRepository.findAll();
+    public List<TagDTO> getAllTags() {
+        List<Tag> result = (List<Tag>) tagRepository.findAll();
+        return result.stream().map(modelMapper::map).collect(Collectors.toList());
     }
 
-    public List<Tag> getTagsByObjectId(Long objectId) {
+    public List<TagDTO> getTagsByObjectId(Long objectId) {
         List<Tag> result = tagRepository.findByObjectId(objectId);
-        return result;
+        return result.stream().map(modelMapper::map).collect(Collectors.toList());
     }
 
-    public List<Tag> getTagsByObjectClass(ObjectClass objectClass) {
+    public List<TagDTO> getTagsByObjectClass(ObjectClass objectClass) {
         List<Tag> result = tagRepository.findByObjectClass(objectClass);
-        return result;
+        return result.stream().map(modelMapper::map).collect(Collectors.toList());
     }
 
-    public List<Tag> getTagsByObjectIdAndObjectClass(Long objectId, ObjectClass objectClass) {
+    public List<TagDTO> getTagsByObjectIdAndObjectClass(Long objectId, ObjectClass objectClass) {
         List<Tag> result = tagRepository.findByObjectIdAndObjectClass(objectId, objectClass);
-        return result;
+        return result.stream().map(modelMapper::map).collect(Collectors.toList());
     }
 
 }

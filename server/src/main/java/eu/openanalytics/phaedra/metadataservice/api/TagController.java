@@ -1,5 +1,6 @@
 package eu.openanalytics.phaedra.metadataservice.api;
 
+import eu.openanalytics.phaedra.metadataservice.dto.TagDTO;
 import eu.openanalytics.phaedra.metadataservice.dto.TaggedObjectDTO;
 import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.metadataservice.model.Tag;
@@ -31,26 +32,26 @@ public class  TagController {
 
     @GetMapping("/tags")
     public ResponseEntity getAllTags() {
-        List<Tag> result = tagService.getAllTags();
+        List<TagDTO> result = tagService.getAllTags();
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
     @GetMapping(path = "/tags", params = {"objectId"})
     public ResponseEntity getTagsByObjectId(@RequestParam(value = "objectId", required = false) Long objectId) {
-        List<Tag> result = tagService.getTagsByObjectId(objectId);
+        List<TagDTO> result = tagService.getTagsByObjectId(objectId);
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
     @GetMapping(path = "/tags", params = {"objectClass"})
     public ResponseEntity getTagsByObjectId(@RequestParam(value = "objectClass", required = false) ObjectClass objectClass) {
-        List<Tag> result = tagService.getTagsByObjectClass(objectClass);
+        List<TagDTO> result = tagService.getTagsByObjectClass(objectClass);
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
     @GetMapping(path = "/tags", params = {"objectId", "objectClass"})
     public ResponseEntity getTagsByObjectIdAndObjectClass(@RequestParam(value = "objectId", required = false) Long objectId,
                                             @RequestParam(value = "objectClass", required = false) ObjectClass objectClass) {
-        List<Tag> result = tagService.getTagsByObjectIdAndObjectClass(objectId, objectClass);
+        List<TagDTO> result = tagService.getTagsByObjectIdAndObjectClass(objectId, objectClass);
         return new ResponseEntity(result, HttpStatus.OK);
     }
 }
