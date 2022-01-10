@@ -37,7 +37,7 @@ public class PropertyController {
     @DeleteMapping("/property")
     public ResponseEntity deleteProperty(@RequestParam(value = "propertyName") String propertyName,
                                          @RequestParam(value = "objectId") Long objectId,
-                                         @RequestParam(value = "objectClass") ObjectClass objectClass) {
+                                         @RequestParam(value = "objectClass") String objectClass) {
         PropertyDTO deletedProperty = metadataService.deleteProperty(propertyName, objectId, objectClass);
         return new ResponseEntity(deletedProperty, HttpStatus.OK);
     }
@@ -62,7 +62,7 @@ public class PropertyController {
     @GetMapping("/property")
     public ResponseEntity getProperty(@RequestParam(value = "propertyName") String propertyName,
                                       @RequestParam(value = "objectId") Long objectId,
-                                      @RequestParam(value = "objectClass") ObjectClass objectClass) {
+                                      @RequestParam(value = "objectClass") String objectClass) {
         PropertyDTO existing = metadataService.getProperty(propertyName, objectId, objectClass);
         return new ResponseEntity(existing, HttpStatus.OK);
     }
@@ -77,7 +77,7 @@ public class PropertyController {
     @GetMapping(path = "/properties")
     public ResponseEntity getProperties(@RequestParam(value = "propertyName", required = false) String propertyName,
                                        @RequestParam(value = "objectId", required = false) Long objectId,
-                                       @RequestParam(value = "objectClass", required = false) ObjectClass objectClass) {
+                                       @RequestParam(value = "objectClass", required = false) String objectClass) {
         PropertyDTO propertyFilter = new PropertyDTO();
         propertyFilter.setPropertyName(propertyName);
         propertyFilter.setObjectId(objectId);

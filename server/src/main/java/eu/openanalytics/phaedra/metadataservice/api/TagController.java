@@ -42,14 +42,14 @@ public class  TagController {
     }
 
     @GetMapping(path = "/tags", params = {"objectClass"})
-    public ResponseEntity getTagsByObjectId(@RequestParam(value = "objectClass", required = false) ObjectClass objectClass) {
+    public ResponseEntity getTagsByObjectId(@RequestParam(value = "objectClass", required = false) String objectClass) {
         List<TagDTO> result = tagService.getTagsByObjectClass(objectClass);
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
     @GetMapping(path = "/tags", params = {"objectId", "objectClass"})
     public ResponseEntity getTagsByObjectIdAndObjectClass(@RequestParam(value = "objectId", required = false) Long objectId,
-                                            @RequestParam(value = "objectClass", required = false) ObjectClass objectClass) {
+                                            @RequestParam(value = "objectClass", required = false) String objectClass) {
         List<TagDTO> result = tagService.getTagsByObjectIdAndObjectClass(objectId, objectClass);
         return new ResponseEntity(result, HttpStatus.OK);
     }

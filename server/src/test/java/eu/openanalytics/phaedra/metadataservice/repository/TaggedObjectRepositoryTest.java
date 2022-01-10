@@ -50,9 +50,8 @@ public class TaggedObjectRepositoryTest {
     @Test
     void findTaggedObjectByObjectIdAndObjectClass() {
         Long objectId = 2000L;
-        ObjectClass objectClass = ObjectClass.PLATE;
 
-        List<TaggedObject> result = taggedObjectRepository.findTaggedObjectByObjectIdAndObjectClass(objectId, objectClass);
+        List<TaggedObject> result = taggedObjectRepository.findTaggedObjectByObjectIdAndObjectClass(objectId, "PLATE");
         assertThat(result).isNotNull();
         assertThat(result).isNotEmpty();
         assertThat(result).size().isEqualTo(1);
@@ -60,9 +59,7 @@ public class TaggedObjectRepositoryTest {
 
     @Test
     void findAllByObjectClass() {
-        ObjectClass objectClass = ObjectClass.FEATURE;
-
-        List<TaggedObject> result = taggedObjectRepository.findAllByObjectClass(objectClass);
+        List<TaggedObject> result = taggedObjectRepository.findAllByObjectClass("FEATURE");
         assertThat(result).isNotNull();
         assertThat(result).isNotEmpty();
         assertThat(result).size().isEqualTo(2);

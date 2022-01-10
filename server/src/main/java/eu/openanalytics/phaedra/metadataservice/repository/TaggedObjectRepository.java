@@ -12,9 +12,9 @@ import java.util.List;
 public interface TaggedObjectRepository extends CrudRepository<TaggedObject, Long> {
     @Query("select * from hca_tagged_object hto " +
             "where hto.object_id = :objectId " +
-            "and hto.object_class = cast(:objectClass as objectclass)")
-    List<TaggedObject> findTaggedObjectByObjectIdAndObjectClass(Long objectId, ObjectClass objectClass);
+            "and hto.object_class = :objectClass")
+    List<TaggedObject> findTaggedObjectByObjectIdAndObjectClass(Long objectId, String objectClass);
 
-    @Query("select * from hca_tagged_object hto where hto.object_class = cast(:objectClass as objectclass)")
-    List<TaggedObject> findAllByObjectClass(ObjectClass objectClass);
+    @Query("select * from hca_tagged_object hto where hto.object_class = :objectClass")
+    List<TaggedObject> findAllByObjectClass(String objectClass);
 }

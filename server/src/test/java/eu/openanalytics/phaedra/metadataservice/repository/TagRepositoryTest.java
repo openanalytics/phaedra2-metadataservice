@@ -74,27 +74,27 @@ public class TagRepositoryTest {
 
     @Test
     public void findByObjectClass() {
-        List<Tag> projectTags = tagRepository.findByObjectClass(ObjectClass.PROJECT);
+        List<Tag> projectTags = tagRepository.findByObjectClass("PROJECT");
         assertThat(projectTags).isNotNull();
         assertThat(projectTags).isNotEmpty();
         assertThat(projectTags.size()).isEqualTo(2);
 
-        List<Tag> protocolTags = tagRepository.findByObjectClass(ObjectClass.PROTOCOL);
+        List<Tag> protocolTags = tagRepository.findByObjectClass("PROTOCOL");
         assertThat(protocolTags).isNotNull();
         assertThat(protocolTags).isNotEmpty();
         assertThat(protocolTags.size()).isEqualTo(2);
 
-        List<Tag> experimentTags = tagRepository.findByObjectClass(ObjectClass.EXPERIMENT);
+        List<Tag> experimentTags = tagRepository.findByObjectClass("EXPERIMENT");
         assertThat(experimentTags).isNotNull();
         assertThat(experimentTags).isNotEmpty();
         assertThat(experimentTags.size()).isEqualTo(2);
 
-        List<Tag> featureTags = tagRepository.findByObjectClass(ObjectClass.FEATURE);
+        List<Tag> featureTags = tagRepository.findByObjectClass("FEATURE");
         assertThat(featureTags).isNotNull();
         assertThat(featureTags).isNotEmpty();
         assertThat(featureTags.size()).isEqualTo(2);
 
-        List<Tag> plateTags = tagRepository.findByObjectClass(ObjectClass.PLATE);
+        List<Tag> plateTags = tagRepository.findByObjectClass("PLATE");
         assertThat(plateTags).isNotNull();
         assertThat(plateTags).isNotEmpty();
         assertThat(plateTags.size()).isEqualTo(2);
@@ -102,13 +102,13 @@ public class TagRepositoryTest {
 
     @Test
     public void findByObjectIdAndObjectClass() {
-        List<Tag> tags = tagRepository.findByObjectIdAndObjectClass(1000L, ObjectClass.PROJECT);
+        List<Tag> tags = tagRepository.findByObjectIdAndObjectClass(1000L, "PROJECT");
         assertThat(tags).isNotNull();
         assertThat(tags).isNotEmpty();
         assertThat(tags.size()).isEqualTo(2);
 
 
-        List<Tag> tags1 = tagRepository.findByObjectIdAndObjectClass(3000L, ObjectClass.WELL);
+        List<Tag> tags1 = tagRepository.findByObjectIdAndObjectClass(3000L, "WELL");
         assertThat(tags1).isNotNull();
         assertThat(tags1).isEmpty();
     }

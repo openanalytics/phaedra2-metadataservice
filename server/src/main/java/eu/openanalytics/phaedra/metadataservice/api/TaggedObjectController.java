@@ -18,14 +18,14 @@ public class TaggedObjectController {
     private TaggedObjectService taggedObjectService;
 
     @GetMapping("/{objectClass}")
-    public ResponseEntity getAllTaggedObjectsByObjectClass(@PathVariable("objectClass") ObjectClass objectClass) {
+    public ResponseEntity getAllTaggedObjectsByObjectClass(@PathVariable("objectClass") String objectClass) {
         List<TaggedObjectDTO> response = new ArrayList<>();
         response.addAll(taggedObjectService.findAllTaggedObjectsByObjectClass(objectClass));
         return new ResponseEntity(response, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{objectClass}", params = {"objectId"})
-    public ResponseEntity getTaggedObjectByIdAndClass(@PathVariable("objectClass") ObjectClass objectClass,
+    public ResponseEntity getTaggedObjectByIdAndClass(@PathVariable("objectClass") String objectClass,
                                                       @RequestParam(value = "objectId", required = false) Long objectId) {
         List<TaggedObjectDTO> response = new ArrayList<>();
         response.addAll(taggedObjectService.findTaggedObjectByObjectIdAndObjectClass(objectId, objectClass));
@@ -33,7 +33,7 @@ public class TaggedObjectController {
     }
 
     @GetMapping(value = "/{objectClass}", params = {"tag"})
-    public ResponseEntity getTaggedObjectsByTag(@PathVariable("objectClass") ObjectClass objectClass,
+    public ResponseEntity getTaggedObjectsByTag(@PathVariable("objectClass") String objectClass,
                                                 @RequestParam(value = "tag", required = false) String tag) {
         List<TaggedObjectDTO> response = taggedObjectService.findAllTaggedObjectsByTagAndObjectClass(tag, objectClass);
         return new ResponseEntity(response, HttpStatus.OK);

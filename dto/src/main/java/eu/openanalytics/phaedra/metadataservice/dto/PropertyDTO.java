@@ -14,9 +14,9 @@ public class PropertyDTO {
     private String propertyName;
     private String propertyValue;
     private Long objectId;
-    private ObjectClass objectClass;
+    private String objectClass;
 
-    public PropertyDTO(String propertyName, Long objectId, ObjectClass objectClass) {
+    public PropertyDTO(String propertyName, Long objectId, String objectClass) {
         this.propertyName = propertyName;
         this.objectId = objectId;
         this.objectClass = objectClass;

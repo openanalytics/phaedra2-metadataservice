@@ -64,17 +64,17 @@ public class PropertyRepositoryTest {
 
     @Test
     public void queryProperties2() {
-        List<Property> result1 = propertyRepository.findAll(null, null, ObjectClass.PROTOCOL);
+        List<Property> result1 = propertyRepository.findAll(null, null, "PROTOCOL");
         assertThat(result1).isNotNull();
         assertThat(result1).isNotEmpty();
         assertThat(result1.size() == 3).isTrue();
 
-        List<Property> result2 = propertyRepository.findAll(null, null, ObjectClass.PROJECT);
+        List<Property> result2 = propertyRepository.findAll(null, null, "PROJECT");
         assertThat(result2).isNotNull();
         assertThat(result2).isNotEmpty();
         assertThat(result2.size() == 3).isTrue();
 
-        List<Property> result3 = propertyRepository.findAll(null, null, ObjectClass.WELL);
+        List<Property> result3 = propertyRepository.findAll(null, null, "WELL");
         assertThat(result3).isNotNull();
         assertThat(result3).isNotEmpty();
         assertThat(result3.size() == 3).isTrue();

@@ -28,14 +28,14 @@ public class TagService {
         if (tag == null) {
             tag = tagRepository.save(new Tag(taggedObjectDTO.getTag()));
         }
-        TaggedObject taggedObject = new TaggedObject(taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass().name(), tag.getId());
+        TaggedObject taggedObject = new TaggedObject(taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass(), tag.getId());
         tag.addObject(taggedObject);
         tagRepository.save(tag);
     }
 
     public void removeObjectTag(TaggedObjectDTO taggedObjectDTO) {
         Tag tag = tagRepository.findByName(taggedObjectDTO.getTag());
-        tag.removeObject(taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass().name());
+        tag.removeObject(taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass());
         tagRepository.save(tag);
     }
 
@@ -49,12 +49,12 @@ public class TagService {
         return result.stream().map(modelMapper::map).collect(Collectors.toList());
     }
 
-    public List<TagDTO> getTagsByObjectClass(ObjectClass objectClass) {
+    public List<TagDTO> getTagsByObjectClass(String objectClass) {
         List<Tag> result = tagRepository.findByObjectClass(objectClass);
         return result.stream().map(modelMapper::map).collect(Collectors.toList());
     }
 
-    public List<TagDTO> getTagsByObjectIdAndObjectClass(Long objectId, ObjectClass objectClass) {
+    public List<TagDTO> getTagsByObjectIdAndObjectClass(Long objectId, String objectClass) {
         List<Tag> result = tagRepository.findByObjectIdAndObjectClass(objectId, objectClass);
         return result.stream().map(modelMapper::map).collect(Collectors.toList());
     }

@@ -35,13 +35,13 @@ public class PropertyService {
         return modelMapper.map(propertyRepository.save(updatedProperty));
     }
 
-    public PropertyDTO deleteProperty(String propertyName, Long objectId, ObjectClass objectClass) {
+    public PropertyDTO deleteProperty(String propertyName, Long objectId, String objectClass) {
         Property property = propertyRepository.findByObjectIdAndPropertyNameAndObjectClass(objectId, propertyName, objectClass);
         propertyRepository.delete(property);
         return modelMapper.map(property);
     }
 
-    public PropertyDTO getProperty(String propertyName, Long objectId, ObjectClass objectClass) {
+    public PropertyDTO getProperty(String propertyName, Long objectId, String objectClass) {
         Property property = propertyRepository.findByObjectIdAndPropertyNameAndObjectClass(objectId, propertyName, objectClass);
         return modelMapper.map(property);
     }

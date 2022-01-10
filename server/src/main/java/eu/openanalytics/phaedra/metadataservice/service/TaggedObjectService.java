@@ -21,12 +21,12 @@ public class TaggedObjectService {
     @Autowired
     private TagRepository tagRepository;
 
-    public List<TaggedObjectDTO> findAllTaggedObjectsByObjectClass(ObjectClass objectClass) {
+    public List<TaggedObjectDTO> findAllTaggedObjectsByObjectClass(String objectClass) {
         List<TaggedObject> result = taggedObjectRepository.findAllByObjectClass(objectClass);
         return result.stream().map(to -> mapToTaggedObjectDTO(to)).collect(Collectors.toList());
     }
 
-    public List<TaggedObjectDTO> findTaggedObjectByObjectIdAndObjectClass(Long objectId, ObjectClass objectClass) {
+    public List<TaggedObjectDTO> findTaggedObjectByObjectIdAndObjectClass(Long objectId, String objectClass) {
         List<TaggedObject> result = taggedObjectRepository.findTaggedObjectByObjectIdAndObjectClass(objectId, objectClass);
         return result.stream().map(to -> mapToTaggedObjectDTO(to)).collect(Collectors.toList());
     }
@@ -53,11 +53,11 @@ public class TaggedObjectService {
      * @param objectClass WELL, PLATE, FEATURE, PROTOCOL, EXPERIMENT or PROJECT
      * @return List of tagged objects
      */
-    public List<TaggedObjectDTO> findAllTaggedObjectsByTagAndObjectClass(String tagName, ObjectClass objectClass) {
+    public List<TaggedObjectDTO> findAllTaggedObjectsByTagAndObjectClass(String tagName, String objectClass) {
         Tag tag = tagRepository.findByName(tagName);
         if (tag != null) {
             return tag.getTaggedObjects().stream()
-                    .filter(to -> to.getObjectClass().equals(objectClass.name()))
+                    .filter(to -> to.getObjectClass().equalsIgnoreCase(objectClass))
                     .map(to -> mapToTaggedObjectDTO(to))
                     .collect(Collectors.toList());
         } else {
@@ -68,7 +68,7 @@ public class TaggedObjectService {
     private TaggedObjectDTO mapToTaggedObjectDTO(TaggedObject taggedObject) {
         TaggedObjectDTO taggedObjectDTO = new TaggedObjectDTO();
         taggedObjectDTO.setObjectId(taggedObject.getObjectId());
-        taggedObjectDTO.setObjectClass(ObjectClass.valueOf(taggedObject.getObjectClass()));
+        taggedObjectDTO.setObjectClass(taggedObject.getObjectClass());
 
         Optional<Tag> tag = tagRepository.findById(taggedObject.getTagId());
         taggedObjectDTO.setTag(tag.map(Tag::getName).orElse(null));

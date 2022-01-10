@@ -47,7 +47,7 @@ public class PropertyControllerTest {
 
     @Test
     public void createProperty() throws Exception {
-        PropertyDTO property = new PropertyDTO("ProtocolProperty1", "Newly created protocol", 1001L, ObjectClass.PROTOCOL);
+        PropertyDTO property = new PropertyDTO("ProtocolProperty1", "Newly created protocol", 1001L, "PROTOCOL");
 
         String requestBody = objectMapper.writeValueAsString(property);
         MvcResult mvcResult = this.mockMvc.perform(post("/property").contentType(MediaType.APPLICATION_JSON).content(requestBody))
@@ -58,18 +58,18 @@ public class PropertyControllerTest {
         PropertyDTO propertyDTO = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), PropertyDTO.class);
         assertThat(propertyDTO).isNotNull();
         assertThat(propertyDTO.getObjectId()).isEqualTo(1001L);
-        assertThat(propertyDTO.getObjectClass()).isEqualTo(ObjectClass.PROTOCOL);
+        assertThat(propertyDTO.getObjectClass()).isEqualTo("PROTOCOL");
     }
 
     @Test
     public void deleteProtocol() throws Exception {
-        PropertyDTO propertyDTO = new PropertyDTO("NumberOfExperiments", 1000L, ObjectClass.PROJECT);
+        PropertyDTO propertyDTO = new PropertyDTO("NumberOfExperiments", 1000L, "PROJECT");
 
         String requestBody = objectMapper.writeValueAsString(propertyDTO);
         MvcResult mvcResult = this.mockMvc.perform(delete("/property")
                         .param("propertyName", propertyDTO.getPropertyName())
                         .param("objectId", String.valueOf(propertyDTO.getObjectId()))
-                        .param("objectClass", propertyDTO.getObjectClass().name()))
+                        .param("objectClass", propertyDTO.getObjectClass()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -85,12 +85,12 @@ public class PropertyControllerTest {
     public void updateProperty() throws Exception {
         String propertyName = "NumberOfFeatures";
         Long objectId = 2000L;
-        ObjectClass objectClass = ObjectClass.PROTOCOL;
+        String objectClass = "PROTOCOL";
 
         MvcResult mvcResult = this.mockMvc.perform(get("/property")
                         .param("propertyName", propertyName)
                         .param("objectId", String.valueOf(objectId))
-                        .param("objectClass", objectClass.name()))
+                        .param("objectClass", objectClass))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();

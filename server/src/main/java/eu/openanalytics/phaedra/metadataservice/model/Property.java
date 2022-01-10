@@ -20,7 +20,7 @@ public class Property {
     private Long objectId;
     @Column("object_class")
     @NotNull
-    private ObjectClass objectClass;
+    private String objectClass;
     @Column("property_name")
     @NotNull
     private String propertyName;
