@@ -84,6 +84,15 @@ public class MetadataServiceApplication {
 		return http.build();
 	}
 	
+	@Bean
+	@Profile("test")
+	public SecurityFilterChain httpSecurityTest(HttpSecurity http) throws Exception {
+		http
+			.authorizeRequests()
+				.anyRequest().permitAll();
+		return http.build();
+	}
+	
 //    @Bean
 //    public WebMvcConfigurer corsConfigurer() {
 //        return new WebMvcConfigurer() {
