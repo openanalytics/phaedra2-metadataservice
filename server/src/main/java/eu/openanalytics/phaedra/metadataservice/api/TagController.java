@@ -1,16 +1,23 @@
 package eu.openanalytics.phaedra.metadataservice.api;
 
-import eu.openanalytics.phaedra.metadataservice.dto.TagDTO;
-import eu.openanalytics.phaedra.metadataservice.dto.TaggedObjectDTO;
-import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
-import eu.openanalytics.phaedra.metadataservice.model.Tag;
-import eu.openanalytics.phaedra.metadataservice.service.TagService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import eu.openanalytics.phaedra.metadataservice.dto.TagDTO;
+import eu.openanalytics.phaedra.metadataservice.dto.TaggedObjectDTO;
+import eu.openanalytics.phaedra.metadataservice.service.TagService;
+import eu.openanalytics.phaedra.util.auth.AuthorizationHelper;
 
 @RestController
 public class  TagController {
@@ -30,7 +37,10 @@ public class  TagController {
     }
 
     @GetMapping("/tags")
-    public ResponseEntity getAllTags() {
+    public ResponseEntity getAllTags(@AuthenticationPrincipal Jwt accessToken) {
+    	if (!AuthorizationHelper.hasAdminAccess(accessToken)) {
+    		return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No permission to invoke this operation");
+    	}
         List<TagDTO> result = tagService.getAllTags();
         return new ResponseEntity(result, HttpStatus.OK);
     }

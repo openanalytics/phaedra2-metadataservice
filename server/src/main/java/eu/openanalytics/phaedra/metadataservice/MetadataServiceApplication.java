@@ -1,8 +1,8 @@
 package eu.openanalytics.phaedra.metadataservice;
 
-import eu.openanalytics.phaedra.util.jdbc.JDBCUtils;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.servers.Server;
+import javax.servlet.ServletContext;
+import javax.sql.DataSource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,13 +12,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.ServletContext;
-import javax.sql.DataSource;
+import eu.openanalytics.phaedra.util.jdbc.JDBCUtils;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.servers.Server;
 
 @EnableDiscoveryClient
 @EnableScheduling
+@EnableWebSecurity
 @SpringBootApplication
 public class MetadataServiceApplication {
     private final ServletContext servletContext;
@@ -67,6 +72,16 @@ public class MetadataServiceApplication {
         return new OpenAPI().addServersItem(server);
     }
 
+	@Bean
+	public SecurityFilterChain httpSecurity(HttpSecurity http) throws Exception {
+		http
+			.authorizeRequests()
+				.anyRequest().authenticated()
+			.and()
+				.oauth2ResourceServer().jwt();
+		return http.build();
+	}
+	
 //    @Bean
 //    public WebMvcConfigurer corsConfigurer() {
 //        return new WebMvcConfigurer() {
