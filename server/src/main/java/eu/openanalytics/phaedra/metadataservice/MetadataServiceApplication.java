@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -73,6 +74,7 @@ public class MetadataServiceApplication {
     }
 
 	@Bean
+	@Profile("!test")
 	public SecurityFilterChain httpSecurity(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
