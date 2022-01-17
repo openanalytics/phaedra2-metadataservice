@@ -80,6 +80,7 @@ public class MetadataServiceApplication {
 			.authorizeRequests()
 				.anyRequest().authenticated()
 			.and()
+				.csrf().disable()
 				.oauth2ResourceServer().jwt();
 		return http.build();
 	}
@@ -89,7 +90,8 @@ public class MetadataServiceApplication {
 	public SecurityFilterChain httpSecurityTest(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
-				.anyRequest().permitAll();
+				.anyRequest().permitAll()
+			.and().csrf().disable();
 		return http.build();
 	}
 	
