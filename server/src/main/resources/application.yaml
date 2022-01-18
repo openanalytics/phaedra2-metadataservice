@@ -13,3 +13,7 @@ spring:
 eureka:
   client:
     enabled: true
+
+logging:
+  level:
+    eu.openanalytics.phaedra: DEBUG
