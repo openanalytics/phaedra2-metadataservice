@@ -9,6 +9,11 @@ spring:
   jackson:
     serialization:
       indent_output: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost
 
 eureka:
   client:
