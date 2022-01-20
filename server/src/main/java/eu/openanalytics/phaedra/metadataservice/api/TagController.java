@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import eu.openanalytics.phaedra.metadataservice.dto.TagDTO;
 import eu.openanalytics.phaedra.metadataservice.dto.TaggedObjectDTO;
 import eu.openanalytics.phaedra.metadataservice.service.TagService;
-import eu.openanalytics.phaedra.util.auth.AuthorizationHelper;
 
 @RestController
 public class  TagController {
@@ -38,9 +37,6 @@ public class  TagController {
 
     @GetMapping("/tags")
     public ResponseEntity getAllTags(@AuthenticationPrincipal Jwt accessToken) {
-    	if (!AuthorizationHelper.hasAdminAccess(accessToken)) {
-    		return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No permission to invoke this operation");
-    	}
         List<TagDTO> result = tagService.getAllTags();
         return new ResponseEntity(result, HttpStatus.OK);
     }
