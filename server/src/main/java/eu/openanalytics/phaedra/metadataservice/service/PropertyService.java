@@ -1,14 +1,15 @@
 package eu.openanalytics.phaedra.metadataservice.service;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import eu.openanalytics.phaedra.metadataservice.dto.PropertyDTO;
-import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.metadataservice.model.Property;
 import eu.openanalytics.phaedra.metadataservice.repository.PropertyRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PropertyService {
@@ -50,5 +51,10 @@ public class PropertyService {
         List<Property> result = propertyRepository.findAll(propertyDTO.getObjectId(), propertyDTO.getPropertyName(), propertyDTO.getObjectClass());
         return result.stream().map(modelMapper::map)
                 .collect(Collectors.toList());
+    }
+    
+    public Map<Long, List<PropertyDTO>> getProperties(Set<Long> objectIds, String objectClass) {
+    	List<Property> props = propertyRepository.findByObjectIdInAndObjectClass(objectIds, objectClass);
+    	return props.stream().map(modelMapper::map).collect(Collectors.groupingBy(PropertyDTO::getObjectId));
     }
 }

@@ -1,15 +1,22 @@
 package eu.openanalytics.phaedra.metadataservice.api;
 
-import eu.openanalytics.phaedra.metadataservice.dto.PropertyDTO;
-import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
-import eu.openanalytics.phaedra.metadataservice.service.PropertyService;
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.util.List;
+import eu.openanalytics.phaedra.metadataservice.dto.PropertyDTO;
+import eu.openanalytics.phaedra.metadataservice.service.PropertyService;
 
 @RestController
 public class PropertyController {
@@ -22,9 +29,9 @@ public class PropertyController {
      * @param propertyDTO
      */
     @PostMapping("/property")
-    public ResponseEntity createProperty(@RequestBody @Valid PropertyDTO propertyDTO) {
+    public ResponseEntity<?> createProperty(@RequestBody @Valid PropertyDTO propertyDTO) {
         PropertyDTO newProperty = metadataService.createProperty(propertyDTO);
-        return new ResponseEntity(newProperty, HttpStatus.CREATED);
+        return new ResponseEntity<>(newProperty, HttpStatus.CREATED);
     }
 
     /**
@@ -35,11 +42,11 @@ public class PropertyController {
      * @return
      */
     @DeleteMapping("/property")
-    public ResponseEntity deleteProperty(@RequestParam(value = "propertyName") String propertyName,
+    public ResponseEntity<?> deleteProperty(@RequestParam(value = "propertyName") String propertyName,
                                          @RequestParam(value = "objectId") Long objectId,
                                          @RequestParam(value = "objectClass") String objectClass) {
         PropertyDTO deletedProperty = metadataService.deleteProperty(propertyName, objectId, objectClass);
-        return new ResponseEntity(deletedProperty, HttpStatus.OK);
+        return new ResponseEntity<>(deletedProperty, HttpStatus.OK);
     }
 
     /**
@@ -47,9 +54,9 @@ public class PropertyController {
      * @param property
      */
     @PutMapping("/property")
-    public ResponseEntity updateProperty(@RequestBody @Valid PropertyDTO property) {
+    public ResponseEntity<?> updateProperty(@RequestBody @Valid PropertyDTO property) {
         PropertyDTO updated = metadataService.updateProperty(property);
-        return new ResponseEntity(updated, HttpStatus.OK);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     /**
@@ -60,11 +67,11 @@ public class PropertyController {
      * @return
      */
     @GetMapping("/property")
-    public ResponseEntity getProperty(@RequestParam(value = "propertyName") String propertyName,
+    public ResponseEntity<?> getProperty(@RequestParam(value = "propertyName") String propertyName,
                                       @RequestParam(value = "objectId") Long objectId,
                                       @RequestParam(value = "objectClass") String objectClass) {
         PropertyDTO existing = metadataService.getProperty(propertyName, objectId, objectClass);
-        return new ResponseEntity(existing, HttpStatus.OK);
+        return new ResponseEntity<>(existing, HttpStatus.OK);
     }
 
     /**
@@ -75,7 +82,7 @@ public class PropertyController {
      * @return Properties value
      */
     @GetMapping(path = "/properties")
-    public ResponseEntity getProperties(@RequestParam(value = "propertyName", required = false) String propertyName,
+    public ResponseEntity<?> getProperties(@RequestParam(value = "propertyName", required = false) String propertyName,
                                        @RequestParam(value = "objectId", required = false) Long objectId,
                                        @RequestParam(value = "objectClass", required = false) String objectClass) {
         PropertyDTO propertyFilter = new PropertyDTO();
@@ -84,6 +91,6 @@ public class PropertyController {
         propertyFilter.setObjectClass(objectClass);
 
         List<PropertyDTO> result = metadataService.getProperties(propertyFilter);
-        return new ResponseEntity(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
  }

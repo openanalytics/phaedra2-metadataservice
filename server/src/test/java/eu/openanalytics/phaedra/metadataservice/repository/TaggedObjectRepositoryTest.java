@@ -2,6 +2,7 @@ package eu.openanalytics.phaedra.metadataservice.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -51,17 +52,10 @@ public class TaggedObjectRepositoryTest {
     void findTaggedObjectByObjectIdAndObjectClass() {
         Long objectId = 2000L;
 
-        List<TaggedObject> result = taggedObjectRepository.findTaggedObjectByObjectIdAndObjectClass(objectId, "PLATE");
+        List<TaggedObject> result = taggedObjectRepository.findByObjectIdInAndObjectClass(Collections.singleton(objectId), "PLATE");
         assertThat(result).isNotNull();
         assertThat(result).isNotEmpty();
         assertThat(result).size().isEqualTo(1);
     }
 
-    @Test
-    void findAllByObjectClass() {
-        List<TaggedObject> result = taggedObjectRepository.findAllByObjectClass("FEATURE");
-        assertThat(result).isNotNull();
-        assertThat(result).isNotEmpty();
-        assertThat(result).size().isEqualTo(2);
-    }
 }

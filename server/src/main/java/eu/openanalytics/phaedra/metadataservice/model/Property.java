@@ -1,7 +1,6 @@
 package eu.openanalytics.phaedra.metadataservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;

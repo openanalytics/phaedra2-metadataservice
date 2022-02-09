@@ -1,12 +1,13 @@
 package eu.openanalytics.phaedra.metadataservice.repository;
 
-import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
-import eu.openanalytics.phaedra.metadataservice.model.Property;
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import eu.openanalytics.phaedra.metadataservice.model.Property;
 
 @Repository
 public interface PropertyRepository extends CrudRepository<Property, Long> {
@@ -22,4 +23,7 @@ public interface PropertyRepository extends CrudRepository<Property, Long> {
             "and (:propertyName is null or p.property_name = :propertyName) " +
             "and (:objectClass is null or p.object_class = :objectClass)")
     List<Property> findAll(Long objectId, String propertyName, String objectClass);
+    
+    List<Property> findByObjectIdInAndObjectClass(Set<Long> objectId, String objectClass);
+   
 }
