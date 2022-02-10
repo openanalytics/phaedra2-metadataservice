@@ -126,20 +126,6 @@ public class TagControllerTest {
     }
 
     @Test
-    void getTagsByObjectId() throws Exception {
-        MvcResult mvcResult = this.mockMvc.perform(get("/tags")
-                        .param("objectId", valueOf(2000L)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn();
-
-        List<Tag> tags = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {});
-        assertThat(tags).isNotNull();
-        assertThat(tags).isNotEmpty();
-        assertThat(tags.size()).isEqualTo(4);
-    }
-
-    @Test
     void getTagsByObjectClass() throws Exception {
         MvcResult mvcResult = this.mockMvc.perform(get("/tags")
                         .param("objectClass", ObjectClass.FEATURE.name()))
