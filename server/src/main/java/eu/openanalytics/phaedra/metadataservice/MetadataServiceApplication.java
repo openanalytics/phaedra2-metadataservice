@@ -88,7 +88,7 @@ public class MetadataServiceApplication {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        Server server = new Server().url(servletContext.getContextPath()).description("Default Server URL");
+        Server server = new Server().url(environment.getProperty("API_URL")).description("Default Server URL");
         return new OpenAPI().addServersItem(server);
     }
 
@@ -102,7 +102,7 @@ public class MetadataServiceApplication {
 				.oauth2ResourceServer().jwt();
 		return http.build();
 	}
-	
+
 //    @Bean
 //    public WebMvcConfigurer corsConfigurer() {
 //        return new WebMvcConfigurer() {
