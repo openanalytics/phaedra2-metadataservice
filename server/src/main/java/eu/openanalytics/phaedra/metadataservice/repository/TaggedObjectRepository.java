@@ -1,7 +1,7 @@
 /**
  * Phaedra II
  *
- * Copyright (C) 2016-2022 Open Analytics
+ * Copyright (C) 2016-2023 Open Analytics
  *
  * ===========================================================================
  *
@@ -32,10 +32,10 @@ import eu.openanalytics.phaedra.metadataservice.model.TaggedObject;
 
 @Repository
 public interface TaggedObjectRepository extends CrudRepository<TaggedObject, Long> {
-	
+
 	@Modifying
 	@Query("delete from hca_tagged_object hto where hto.tag_id = :tagId and hto.object_id = :objectId and hto.object_class = :objectClass")
 	void deleteByTagIdAndObjectIdAndObjectClass(Long tagId, Long objectId, String objectClass);
-	
+
     List<TaggedObject> findByObjectIdInAndObjectClass(Set<Long> objectIds, String objectClass);
 }

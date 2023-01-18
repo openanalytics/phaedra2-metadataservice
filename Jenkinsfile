@@ -12,7 +12,7 @@ pipeline {
     }
 
     environment {
-        REPO_PREFIX = "772435625456.dkr.ecr.eu-west-1.amazonaws.com/openanalytics/"
+        REPO_PREFIX = "772435625456.dkr.ecr.eu-west-1.amazonaws.com/phaedra2/"
         ACCOUNTID = "772435625456"
     }
     stages {

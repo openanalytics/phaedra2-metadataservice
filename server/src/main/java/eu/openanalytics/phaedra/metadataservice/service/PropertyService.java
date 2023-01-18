@@ -1,7 +1,7 @@
 /**
  * Phaedra II
  *
- * Copyright (C) 2016-2022 Open Analytics
+ * Copyright (C) 2016-2023 Open Analytics
  *
  * ===========================================================================
  *
@@ -72,7 +72,7 @@ public class PropertyService {
         return result.stream().map(modelMapper::map)
                 .collect(Collectors.toList());
     }
-    
+
     public Map<Long, List<PropertyDTO>> getProperties(Set<Long> objectIds, String objectClass) {
     	List<Property> props = propertyRepository.findByObjectIdInAndObjectClass(objectIds, objectClass);
     	return props.stream().map(modelMapper::map).collect(Collectors.groupingBy(PropertyDTO::getObjectId));

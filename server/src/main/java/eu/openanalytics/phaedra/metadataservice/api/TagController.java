@@ -1,7 +1,7 @@
 /**
  * Phaedra II
  *
- * Copyright (C) 2016-2022 Open Analytics
+ * Copyright (C) 2016-2023 Open Analytics
  *
  * ===========================================================================
  *
@@ -38,7 +38,7 @@ import eu.openanalytics.phaedra.metadataservice.service.TagService;
 
 @RestController
 public class  TagController {
-	
+
     @Autowired
     private TagService tagService;
 

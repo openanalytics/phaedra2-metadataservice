@@ -1,7 +1,7 @@
 /**
  * Phaedra II
  *
- * Copyright (C) 2016-2022 Open Analytics
+ * Copyright (C) 2016-2023 Open Analytics
  *
  * ===========================================================================
  *
@@ -40,7 +40,7 @@ public class TagService {
 
     private final TagRepository tagRepository;
     private final TaggedObjectRepository taggedObjectRepository;
-    
+
     private final ModelMapper modelMapper;
 
     public TagService(TagRepository tagRepository, TaggedObjectRepository taggedObjectRepository, ModelMapper modelMapper) {
@@ -80,20 +80,20 @@ public class TagService {
         List<Tag> result = tagRepository.findByObjectIdAndObjectClass(objectId, objectClass);
         return result.stream().map(modelMapper::map).collect(Collectors.toList());
     }
-    
+
     public Map<Long, List<TagDTO>> getTagsByObjectIdsAndObjectClass(Set<Long> objectIds, String objectClass) {
     	List<TaggedObject> taggedObjects = taggedObjectRepository.findByObjectIdInAndObjectClass(objectIds, objectClass);
-    	
+
     	Set<Long> tagIds = taggedObjects.stream().map(to -> to.getTagId()).distinct().collect(Collectors.toSet());
     	List<Tag> tags = tagRepository.findByIdIn(tagIds);
-    	
+
     	// For each object ID, map its TaggedObjects to Tags.
     	Function<TaggedObject, TagDTO> tagFinder = to -> tags.stream()
     			.filter(t -> t.getId() == to.getTagId())
     			.findAny()
     			.map(modelMapper::map)
     			.orElse(null);
-    	
+
     	return taggedObjects.stream().collect(
     			Collectors.groupingBy(TaggedObject::getObjectId, Collectors.mapping(tagFinder, Collectors.toList())));
     }
