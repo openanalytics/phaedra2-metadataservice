@@ -12,8 +12,8 @@ pipeline {
     }
 
     environment {
-        REPO_PREFIX = "772435625456.dkr.ecr.eu-west-1.amazonaws.com/openanalytics/"
-        ACCOUNTID = "772435625456"
+        REPO_PREFIX = "196229073436.dkr.ecr.eu-west-1.amazonaws.com/openanalytics/"
+        ACCOUNTID = "196229073436"
     }
     stages {
 
@@ -54,19 +54,19 @@ pipeline {
             }
         }
 
-//         stage('Test') {
-//             steps {
-//                 container('builder') {
-//
-//                     configFileProvider([configFile(fileId: 'maven-settings-rsb', variable: 'MAVEN_SETTINGS_RSB')]) {
-//
-//                         sh "mvn -s \$MAVEN_SETTINGS_RSB test -Ddocker.skip ${env.MVN_ARGS}"
-//
-//                     }
-//
-//                 }
-//             }
-//         }
+        stage('Test') {
+            steps {
+                container('builder') {
+
+                    configFileProvider([configFile(fileId: 'maven-settings-rsb', variable: 'MAVEN_SETTINGS_RSB')]) {
+
+                        sh "mvn -s \$MAVEN_SETTINGS_RSB test -Ddocker.skip ${env.MVN_ARGS}"
+
+                    }
+
+                }
+            }
+        }
 
         stage("Deploy to Nexus") {
             steps {
