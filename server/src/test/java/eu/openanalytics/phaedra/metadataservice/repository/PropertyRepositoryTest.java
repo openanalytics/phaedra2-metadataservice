@@ -48,13 +48,6 @@ public class PropertyRepositoryTest {
     @Autowired
     private PropertyRepository propertyRepository;
 
-    @Container
-    private static JdbcDatabaseContainer postgreSQLContainer = new PostgreSQLContainer("postgres:13-alpine")
-            .withDatabaseName("phaedra2")
-            .withUrlParam("currentSchema","metadata")
-            .withPassword("inmemory")
-            .withUsername("inmemory");
-
     @DynamicPropertySource
     static void registerPgProperties(DynamicPropertyRegistry registry) {
         registry.add("DB_URL", Containers.postgreSQLContainer::getJdbcUrl);

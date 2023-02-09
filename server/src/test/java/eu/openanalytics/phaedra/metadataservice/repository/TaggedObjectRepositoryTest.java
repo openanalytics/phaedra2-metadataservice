@@ -49,12 +49,6 @@ public class TaggedObjectRepositoryTest {
     @Autowired
     private TaggedObjectRepository taggedObjectRepository;
 
-    @Container
-    private static JdbcDatabaseContainer postgreSQLContainer = new PostgreSQLContainer("postgres:13-alpine")
-            .withDatabaseName("phaedra2")
-            .withUrlParam("currentSchema","metadata")
-            .withPassword("inmemory")
-            .withUsername("inmemory");
 
     @DynamicPropertySource
     static void registerPgProperties(DynamicPropertyRegistry registry) {
