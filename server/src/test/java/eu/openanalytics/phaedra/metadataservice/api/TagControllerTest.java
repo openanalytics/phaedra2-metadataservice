@@ -75,7 +75,7 @@ public class TagControllerTest {
         TaggedObjectDTO taggedObject = new TaggedObjectDTO(1000L, "PROTOCOL", "protTag1");
 
         String requestBody = objectMapper.writeValueAsString(taggedObject);
-        this.mockMvc.perform(post("/tag").contentType(MediaType.APPLICATION_JSON).content(requestBody))
+        this.mockMvc.perform(post("/tags").contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andDo(print())
                 .andExpect(status().isCreated());
 
@@ -96,7 +96,7 @@ public class TagControllerTest {
     void removeTag() throws Exception{
         TaggedObjectDTO taggedObject1 = new TaggedObjectDTO(1000L, "PROJECT", "Tag0");
         String requestBody = objectMapper.writeValueAsString(taggedObject1);
-        this.mockMvc.perform(delete("/tag")
+        this.mockMvc.perform(delete("/tags")
                         .contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -115,7 +115,7 @@ public class TagControllerTest {
 
         TaggedObjectDTO taggedObject2 = new TaggedObjectDTO(1000L, "PROJECT", "Tag1");
         requestBody = objectMapper.writeValueAsString(taggedObject2);
-        this.mockMvc.perform(delete("/tag")
+        this.mockMvc.perform(delete("/tags")
                         .contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -130,6 +130,7 @@ public class TagControllerTest {
         tags = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {});
         assertThat(tags).isNotNull();
         assertThat(tags).isEmpty();
+        assertThat(tags.size()).isEqualTo(1);
     }
 
 //    @Test Disabled while auth is tested.

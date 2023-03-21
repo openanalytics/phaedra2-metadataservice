@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,39 +38,41 @@ import eu.openanalytics.phaedra.metadataservice.dto.TaggedObjectDTO;
 import eu.openanalytics.phaedra.metadataservice.service.TagService;
 
 @RestController
+@RequestMapping("/tags")
 public class  TagController {
 
     @Autowired
     private TagService tagService;
 
-    @PostMapping("/tag")
+    @PostMapping
     public ResponseEntity<?> addTag(@RequestBody TaggedObjectDTO taggedObject) {
         tagService.addObjectTag(taggedObject);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/tag")
+    @DeleteMapping
     public ResponseEntity<?> removeTag(@RequestBody TaggedObjectDTO taggedObject) {
         tagService.removeObjectTag(taggedObject);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/tags")
-    public ResponseEntity<?> getAllTags() {
-        List<TagDTO> result = tagService.getAllTags();
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/tags", params = {"objectClass"})
-    public ResponseEntity<?> getTagsByObjectClass(@RequestParam(value = "objectClass", required = false) String objectClass) {
-        List<TagDTO> result = tagService.getTagsByObjectClass(objectClass);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/tags", params = {"objectId", "objectClass"})
-    public ResponseEntity<?> getTagsByObjectIdAndObjectClass(@RequestParam(value = "objectId", required = false) Long objectId,
-                                            @RequestParam(value = "objectClass", required = false) String objectClass) {
-        List<TagDTO> result = tagService.getTagsByObjectIdAndObjectClass(objectId, objectClass);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<?> getTagsByObjectIdAndObjectClass(
+    		@RequestParam(value = "objectId", required = false) Long objectId,
+    		@RequestParam(value = "objectClass", required = false) String objectClass) {
+    	
+    	List<TagDTO> tags = null;
+    	
+    	if (objectId == null) {
+    		if (objectClass == null) {
+    			tags = tagService.getAllTags();
+    		} else {
+    			tags = tagService.getTagsByObjectClass(objectClass);
+    		}
+    	} else {
+    		tags = tagService.getTagsByObjectIdAndObjectClass(objectId, objectClass);
+    	}
+        
+        return new ResponseEntity<>(tags, HttpStatus.OK);
     }
 }

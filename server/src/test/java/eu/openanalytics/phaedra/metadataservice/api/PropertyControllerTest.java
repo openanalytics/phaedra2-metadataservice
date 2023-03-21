@@ -74,7 +74,7 @@ public class PropertyControllerTest {
         PropertyDTO property = new PropertyDTO("ProtocolProperty1", "Newly created protocol", 1001L, "PROTOCOL");
 
         String requestBody = objectMapper.writeValueAsString(property);
-        MvcResult mvcResult = this.mockMvc.perform(post("/property").contentType(MediaType.APPLICATION_JSON).content(requestBody))
+        MvcResult mvcResult = this.mockMvc.perform(post("/properties").contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andReturn();
@@ -89,8 +89,7 @@ public class PropertyControllerTest {
     public void deleteProtocol() throws Exception {
         PropertyDTO propertyDTO = new PropertyDTO("NumberOfExperiments", 1000L, "PROJECT");
 
-        String requestBody = objectMapper.writeValueAsString(propertyDTO);
-        MvcResult mvcResult = this.mockMvc.perform(delete("/property")
+        MvcResult mvcResult = this.mockMvc.perform(delete("/properties")
                         .param("propertyName", propertyDTO.getPropertyName())
                         .param("objectId", String.valueOf(propertyDTO.getObjectId()))
                         .param("objectClass", propertyDTO.getObjectClass()))
@@ -111,7 +110,7 @@ public class PropertyControllerTest {
         Long objectId = 2000L;
         String objectClass = "PROTOCOL";
 
-        MvcResult mvcResult = this.mockMvc.perform(get("/property")
+        MvcResult mvcResult = this.mockMvc.perform(get("/properties")
                         .param("propertyName", propertyName)
                         .param("objectId", String.valueOf(objectId))
                         .param("objectClass", objectClass))
@@ -128,7 +127,7 @@ public class PropertyControllerTest {
         existingPropertyDTO.setPropertyValue("15");
 
         String requestBody = objectMapper.writeValueAsString(existingPropertyDTO);
-        mvcResult = this.mockMvc.perform(put("/property").contentType(MediaType.APPLICATION_JSON).content(requestBody))
+        mvcResult = this.mockMvc.perform(put("/properties").contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
