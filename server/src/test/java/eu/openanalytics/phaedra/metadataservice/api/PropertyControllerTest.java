@@ -47,7 +47,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import eu.openanalytics.phaedra.metadataservice.dto.PropertyDTO;
-import eu.openanalytics.phaedra.metadataservice.model.Property;
 import eu.openanalytics.phaedra.metadataservice.support.Containers;
 
 @Testcontainers
@@ -118,7 +117,11 @@ public class PropertyControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        PropertyDTO existingPropertyDTO = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), PropertyDTO.class);
+        List<PropertyDTO> results = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {});
+        assertThat(results).isNotNull();
+        assertThat(results).isNotEmpty();
+        
+        PropertyDTO existingPropertyDTO = results.get(0);
         assertThat(existingPropertyDTO).isNotNull();
         assertThat(existingPropertyDTO.getPropertyName()).isEqualTo(propertyName);
         assertThat(existingPropertyDTO.getObjectId()).isEqualTo(objectId);
@@ -147,7 +150,7 @@ public class PropertyControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        List<Property> results = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {});
+        List<PropertyDTO> results = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {});
         assertThat(results).isNotNull();
         assertThat(results).isNotEmpty();
     }
