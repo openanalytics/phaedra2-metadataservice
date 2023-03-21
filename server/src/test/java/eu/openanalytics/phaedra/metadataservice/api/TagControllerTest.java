@@ -130,7 +130,6 @@ public class TagControllerTest {
         tags = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {});
         assertThat(tags).isNotNull();
         assertThat(tags).isEmpty();
-        assertThat(tags.size()).isEqualTo(1);
     }
 
 //    @Test Disabled while auth is tested.
