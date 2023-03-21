@@ -23,6 +23,8 @@ package eu.openanalytics.phaedra.metadataservice;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -47,10 +49,14 @@ import io.swagger.v3.oas.models.servers.Server;
 @SpringBootApplication
 public class MetadataServiceApplication {
 
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	
 	private final Environment environment;
 
     public MetadataServiceApplication(Environment environment) {
         this.environment = environment;
+        logger.info(String.format("jwk-set-uri from spring env: %s", environment.getProperty("spring.security.oauth2.resourceserver.jwt.jwk-set-uri")));
+        logger.info(String.format("jwk-set-uri from system env: %s", System.getenv().get("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI")));
     }
 
     public static void main(String[] args) {
