@@ -15,10 +15,6 @@ spring:
         jwt:
           jwk-set-uri: http://localhost
 
-eureka:
-  client:
-    enabled: true
-
 logging:
   level:
     eu.openanalytics.phaedra: DEBUG

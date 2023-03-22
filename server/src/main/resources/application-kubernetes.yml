@@ -9,7 +9,3 @@ spring:
       enabled: true
   liquibase:
     enabled: false
-
-eureka:
-  client:
-    enabled: false
