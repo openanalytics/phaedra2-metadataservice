@@ -27,6 +27,8 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import eu.openanalytics.phaedra.metadataservice.dto.TagDTO;
@@ -44,6 +46,8 @@ public class TagService {
 
     private final ModelMapper modelMapper;
 
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    
     public TagService(TagRepository tagRepository, TaggedObjectRepository taggedObjectRepository, ModelMapper modelMapper) {
         this.tagRepository = tagRepository;
         this.taggedObjectRepository = taggedObjectRepository;
@@ -88,6 +92,9 @@ public class TagService {
     	Set<Long> tagIds = taggedObjects.stream().map(TaggedObject::getTagId).collect(Collectors.toSet());
     	List<Tag> tags = tagRepository.findByIdIn(tagIds);
 
+    	logger.info(String.format("Found %d tagged objects: %s", taggedObjects.size(), taggedObjects));
+    	logger.info(String.format("Found %d tags: %s", tags.size(), tags));
+    	
     	// For each object ID, map its TaggedObjects to Tags.
     	Function<TaggedObject, TagDTO> tagFinder = to -> tags.stream()
     			.filter(t -> t.getId() == to.getTagId())
@@ -98,6 +105,7 @@ public class TagService {
     	Map<Long, List<TagDTO>> mappedTags = new HashMap<>();
     	for (Long objectId: objectIds) {
     		List<TagDTO> objectTags = taggedObjects.stream().filter(to -> to.getObjectId() == objectId).map(tagFinder).toList();
+    		logger.info(String.format("Tags for object %d: %s", objectId, objectTags));
     		mappedTags.put(objectId, objectTags);
     	}
     	return mappedTags;
