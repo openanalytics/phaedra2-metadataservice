@@ -20,6 +20,7 @@
  */
 package eu.openanalytics.phaedra.metadataservice.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -84,7 +85,7 @@ public class TagService {
     public Map<Long, List<TagDTO>> getTagsByObjectIdsAndObjectClass(Set<Long> objectIds, String objectClass) {
     	List<TaggedObject> taggedObjects = taggedObjectRepository.findByObjectIdInAndObjectClass(objectIds, objectClass);
 
-    	Set<Long> tagIds = taggedObjects.stream().map(to -> to.getTagId()).distinct().collect(Collectors.toSet());
+    	Set<Long> tagIds = taggedObjects.stream().map(TaggedObject::getTagId).collect(Collectors.toSet());
     	List<Tag> tags = tagRepository.findByIdIn(tagIds);
 
     	// For each object ID, map its TaggedObjects to Tags.
@@ -94,7 +95,13 @@ public class TagService {
     			.map(modelMapper::map)
     			.orElse(null);
 
-    	return taggedObjects.stream().collect(
-    			Collectors.groupingBy(TaggedObject::getObjectId, Collectors.mapping(tagFinder, Collectors.toList())));
+    	Map<Long, List<TagDTO>> mappedTags = new HashMap<>();
+    	for (Long objectId: objectIds) {
+    		List<TagDTO> objectTags = taggedObjects.stream().filter(to -> to.getObjectId() == objectId).map(tagFinder).toList();
+    		mappedTags.put(objectId, objectTags);
+    	}
+    	return mappedTags;
+//    	return taggedObjects.stream().collect(
+//    			Collectors.groupingBy(TaggedObject::getObjectId, Collectors.mapping(tagFinder, Collectors.toList())));
     }
 }
