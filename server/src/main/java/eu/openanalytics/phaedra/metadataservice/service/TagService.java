@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -91,20 +90,17 @@ public class TagService {
 
     	Set<Long> tagIds = taggedObjects.stream().map(TaggedObject::getTagId).collect(Collectors.toSet());
     	List<Tag> tags = tagRepository.findByIdIn(tagIds);
-
-    	logger.info(String.format("Found %d tagged objects: %s", taggedObjects.size(), taggedObjects));
-    	logger.info(String.format("Found %d tags: %s", tags.size(), tags));
+    	Map<Long, Tag> tagMap = tags.stream().collect(Collectors.toMap(Tag::getId, t -> t));
     	
-    	// For each object ID, map its TaggedObjects to Tags.
-    	Function<TaggedObject, TagDTO> tagFinder = to -> tags.stream()
-    			.filter(t -> t.getId() == to.getTagId())
-    			.findAny()
-    			.map(modelMapper::map)
-    			.orElse(null);
-
+    	logger.info(String.format("Found %d tagged objects: %s", taggedObjects.size(), taggedObjects));
+    	logger.info(String.format("Found %d tags: %s", tagMap.size(), tagMap));
+    	
     	Map<Long, List<TagDTO>> mappedTags = new HashMap<>();
     	for (Long objectId: objectIds) {
-    		List<TagDTO> objectTags = taggedObjects.stream().filter(to -> to.getObjectId() == objectId).map(tagFinder).toList();
+    		List<TagDTO> objectTags = taggedObjects.stream()
+    				.filter(to -> to.getObjectId() == objectId)
+    				.map(to -> tagMap.get(to.getTagId()))
+    				.map(t -> modelMapper.map(t)).toList();
     		logger.info(String.format("Tags for object %d: %s", objectId, objectTags));
     		mappedTags.put(objectId, objectTags);
     	}
