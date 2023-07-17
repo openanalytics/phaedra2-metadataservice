@@ -23,6 +23,7 @@ package eu.openanalytics.phaedra.metadataservice.client.config;
 import eu.openanalytics.phaedra.metadataservice.client.MetadataServiceClient;
 import eu.openanalytics.phaedra.metadataservice.client.impl.HttpMetadataServiceClient;
 import eu.openanalytics.phaedra.util.PhaedraRestTemplate;
+import eu.openanalytics.phaedra.util.auth.IAuthorizationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,7 +31,7 @@ import org.springframework.context.annotation.Configuration;
 public class MetadataServiceClientAutoConfiguration {
 
     @Bean
-    public MetadataServiceClient metadataServiceClient(PhaedraRestTemplate phaedraRestTemplate) {
-        return new HttpMetadataServiceClient(phaedraRestTemplate);
+    public MetadataServiceClient metadataServiceClient(PhaedraRestTemplate phaedraRestTemplate, IAuthorizationService authService) {
+        return new HttpMetadataServiceClient(phaedraRestTemplate, authService);
     }
 }
