@@ -27,4 +27,6 @@ public enum ObjectClass {
     FEATURE,
     PROTOCOL,
     PROJECT,
+    PLATE_TEMPLATE,
+    WELL_TEMPLATE
 }
