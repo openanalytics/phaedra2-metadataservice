@@ -1,0 +1,20 @@
+server:
+  servlet:
+    context-path: /phaedra/metadata-service
+  port: 3002
+
+spring:
+  application:
+    name: phaedra-metadata-service
+  jackson:
+    serialization:
+      indent_output: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost
+
+logging:
+  level:
+    eu.openanalytics.phaedra: DEBUG

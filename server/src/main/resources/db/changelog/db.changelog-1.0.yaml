@@ -1,0 +1,110 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: sberberovic
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+            name: id
+            type: BIGSERIAL
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: hca_property_pkey
+            name: object_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: hca_property_pkey
+            name: object_class
+            type: TEXT
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: hca_property_pkey
+            name: property_name
+            type: TEXT
+        - column:
+            constraints:
+              nullable: false
+            name: property_value
+            type: TEXT
+        tableName: hca_property
+- changeSet:
+    id: 2
+    author: sberberovic
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: hca_tag_pkey
+            name: id
+            type: BIGSERIAL
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: TEXT
+        tableName: hca_tag
+- changeSet:
+    id: 3
+    author: sberberovic
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+            name: id
+            type: BIGSERIAL
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: hca_tagged_object_pkey
+            name: object_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: hca_tagged_object_pkey
+            name: object_class
+            type: TEXT
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: hca_tagged_object_pkey
+            name: tag_id
+            type: BIGINT
+        tableName: hca_tagged_object
+- changeSet:
+    id: 4
+    author: sberberovic
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: tag_id
+        baseTableName: hca_tagged_object
+        constraintName: hca_tagged_object_tag_id_fkey
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: CASCADE
+        referencedColumnNames: id
+        referencedTableName: hca_tag
+        validate: true
+
