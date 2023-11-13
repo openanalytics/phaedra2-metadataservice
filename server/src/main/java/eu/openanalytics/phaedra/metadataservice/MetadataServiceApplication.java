@@ -20,31 +20,34 @@
  */
 package eu.openanalytics.phaedra.metadataservice;
 
-import javax.sql.DataSource;
-
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import eu.openanalytics.phaedra.util.PhaedraRestTemplate;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.env.Environment;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.client.RestTemplate;
-
 import eu.openanalytics.phaedra.util.auth.AuthenticationConfigHelper;
 import eu.openanalytics.phaedra.util.auth.AuthorizationServiceFactory;
 import eu.openanalytics.phaedra.util.auth.IAuthorizationService;
 import eu.openanalytics.phaedra.util.jdbc.JDBCUtils;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.servers.Server;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 
-@EnableScheduling
+import javax.sql.DataSource;
+
 @EnableWebSecurity
 @SpringBootApplication
+@EnableDiscoveryClient
+@EnableScheduling
+
 public class MetadataServiceApplication {
 
 	private final Environment environment;
@@ -58,11 +61,14 @@ public class MetadataServiceApplication {
     }
 
     @Bean
+    @LoadBalanced
+    public PhaedraRestTemplate restTemplate() {
+        return new PhaedraRestTemplate();
+    }
+
+    @Bean
     public DataSource dataSource() {
         String url = environment.getProperty("DB_URL");
-        String username = environment.getProperty("DB_USER");
-        String password = environment.getProperty("DB_PASSWORD");
-
         if (StringUtils.isEmpty(url)) {
             throw new RuntimeException("No database URL configured: " + url);
         }
@@ -71,12 +77,21 @@ public class MetadataServiceApplication {
             throw new RuntimeException("Unsupported database type: " + url);
         }
 
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(driverClassName);
-        dataSource.setUrl(url);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-        return dataSource;
+        HikariConfig config = new HikariConfig();
+        config.setMaximumPoolSize(20);
+        config.setConnectionTimeout(60000);
+        config.setJdbcUrl(url);
+        config.setDriverClassName(driverClassName);
+        config.setUsername(environment.getProperty("DB_USER"));
+        config.setPassword(environment.getProperty("DB_PASSWORD"));
+        config.setAutoCommit(true);
+
+        String schema = environment.getProperty("DB_SCHEMA");
+        if (!StringUtils.isEmpty(schema)) {
+            config.setConnectionInitSql("set search_path to " + schema);
+        }
+
+        return new HikariDataSource(config);
     }
 
     @Bean
@@ -94,10 +109,4 @@ public class MetadataServiceApplication {
 	public SecurityFilterChain httpSecurity(HttpSecurity http) throws Exception {
 		return AuthenticationConfigHelper.configure(http);
 	}
-
-    @Bean
-    public PhaedraRestTemplate restTemplate() {
-        PhaedraRestTemplate restTemplate = new PhaedraRestTemplate();
-        return restTemplate;
-    }
 }
