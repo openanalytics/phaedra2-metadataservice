@@ -40,10 +40,8 @@ pipeline {
         stage('Build') {
             steps {
                 container('builder') {
-                    withDockerRegistry([credentialsId: "oa-sa-jenkins-registry", url: "https://registry.openanalytics.eu"]) {
-                        configFileProvider([configFile(fileId: 'maven-settings-rsb', variable: 'MAVEN_SETTINGS_RSB')]) {
-                            sh "mvn -s \$MAVEN_SETTINGS_RSB -U clean install -DskipTests -Ddocker.skip ${env.MVN_ARGS} ${env.MVN_EXLCUDE_PARENT}"
-                        }
+                    configFileProvider([configFile(fileId: 'maven-settings-rsb', variable: 'MAVEN_SETTINGS_RSB')]) {
+                        sh "mvn -s \$MAVEN_SETTINGS_RSB -U clean install -DskipTests -Ddocker.skip ${env.MVN_ARGS} ${env.MVN_EXLCUDE_PARENT}"
                     }
                 }
             }
@@ -64,10 +62,8 @@ pipeline {
         stage("Deploy to Nexus") {
             steps {
                 container('builder') {
-                    withDockerRegistry([credentialsId: "oa-sa-jenkins-registry", url: "https://registry.openanalytics.eu"]) {
-                        configFileProvider([configFile(fileId: 'maven-settings-rsb', variable: 'MAVEN_SETTINGS_RSB')]) {
-                            sh "mvn -s \$MAVEN_SETTINGS_RSB deploy -DskipTests -Ddocker.skip ${env.MVN_ARGS} ${env.MVN_EXLCUDE_PARENT}"
-                        }
+                    configFileProvider([configFile(fileId: 'maven-settings-rsb', variable: 'MAVEN_SETTINGS_RSB')]) {
+                        sh "mvn -s \$MAVEN_SETTINGS_RSB deploy -DskipTests -Ddocker.skip ${env.MVN_ARGS} ${env.MVN_EXLCUDE_PARENT}"
                     }
                 }
             }
