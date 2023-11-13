@@ -3,23 +3,23 @@ server:
     context-path: /phaedra/metadata-service
   port: 3002
 
-  spring:
-    application:
-      name: phaedra-metadata-service
-    jackson:
-      serialization:
-        indent_output: true
-    cloud:
-      kubernetes:
-        enabled: false
-    liquibase:
+spring:
+  application:
+    name: phaedra-metadata-service
+  liquibase:
+    enabled: false
+  jackson:
+    serialization:
+      indent_output: true
+  cloud:
+    kubernetes:
       enabled: false
-    security:
-      oauth2:
-        resourceserver:
-          jwt:
-            jwk-set-uri: http://localhost
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost
 
-  logging:
-    level:
-      eu.openanalytics.phaedra: DEBUG
+logging:
+  file:
+    name: /var/log/metadataservice.log
