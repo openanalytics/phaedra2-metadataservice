@@ -7,5 +7,4 @@ spring:
   cloud:
     kubernetes:
       enabled: true
-  liquibase:
-    enabled: false
+
