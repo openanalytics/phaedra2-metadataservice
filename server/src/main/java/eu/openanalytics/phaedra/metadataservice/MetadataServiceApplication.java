@@ -22,6 +22,7 @@ package eu.openanalytics.phaedra.metadataservice;
 
 import javax.sql.DataSource;
 
+import eu.openanalytics.phaedra.util.PhaedraRestTemplate;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -57,11 +58,6 @@ public class MetadataServiceApplication {
     }
 
     @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
-    @Bean
     public DataSource dataSource() {
         String url = environment.getProperty("DB_URL");
         String username = environment.getProperty("DB_USER");
@@ -88,7 +84,7 @@ public class MetadataServiceApplication {
         Server server = new Server().url(environment.getProperty("API_URL")).description("Default Server URL");
         return new OpenAPI().addServersItem(server);
     }
-    
+
 	@Bean
 	public IAuthorizationService authService() {
 		return AuthorizationServiceFactory.create();
@@ -99,4 +95,9 @@ public class MetadataServiceApplication {
 		return AuthenticationConfigHelper.configure(http);
 	}
 
+    @Bean
+    public PhaedraRestTemplate restTemplate() {
+        PhaedraRestTemplate restTemplate = new PhaedraRestTemplate();
+        return restTemplate;
+    }
 }
