@@ -4,6 +4,6 @@ databaseChangeLog:
       author: sberberovic
       changes:
         - sql:
-            sql: alter type objectclass add value if not exists PLATE_TEMPLATE
+            sql: alter type objectclass add value if not exists 'PLATE_TEMPLATE'
         - sql:
-            sql: alter type objectclass add value if not exists WELL_TEMPLATE
+            sql: alter type objectclass add value if not exists 'WELL_TEMPLATE'
