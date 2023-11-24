@@ -41,8 +41,11 @@ import eu.openanalytics.phaedra.metadataservice.service.PropertyService;
 @RequestMapping("/properties")
 public class PropertyController {
 
-    @Autowired
-    private PropertyService metadataService;
+    private final PropertyService metadataService;
+
+    public PropertyController(PropertyService metadataService) {
+        this.metadataService = metadataService;
+    }
 
     @PostMapping
     public ResponseEntity<?> createProperty(@RequestBody @Valid PropertyDTO propertyDTO) {
@@ -69,7 +72,7 @@ public class PropertyController {
     		@RequestParam(value = "propertyName", required = false) String propertyName,
     		@RequestParam(value = "objectId", required = false) Long objectId,
     		@RequestParam(value = "objectClass", required = false) String objectClass) {
-    	
+
         PropertyDTO propertyFilter = new PropertyDTO();
         propertyFilter.setPropertyName(propertyName);
         propertyFilter.setObjectId(objectId);

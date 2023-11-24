@@ -6,9 +6,14 @@ server:
 spring:
   application:
     name: phaedra-metadata-service
+  liquibase:
+    enabled: false
   jackson:
     serialization:
       indent_output: true
+  cloud:
+    kubernetes:
+      enabled: false
   security:
     oauth2:
       resourceserver:
@@ -16,5 +21,5 @@ spring:
           jwk-set-uri: http://localhost
 
 logging:
-  level:
-    eu.openanalytics.phaedra: DEBUG
+  file:
+    name: /var/log/metadataservice.log
