@@ -20,16 +20,15 @@
  */
 package eu.openanalytics.phaedra.metadataservice.service;
 
+import eu.openanalytics.phaedra.metadataservice.dto.PropertyDTO;
+import eu.openanalytics.phaedra.metadataservice.model.Property;
+import eu.openanalytics.phaedra.metadataservice.repository.PropertyRepository;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-
-import eu.openanalytics.phaedra.metadataservice.dto.PropertyDTO;
-import eu.openanalytics.phaedra.metadataservice.model.Property;
-import eu.openanalytics.phaedra.metadataservice.repository.PropertyRepository;
 
 @Service
 public class PropertyService {

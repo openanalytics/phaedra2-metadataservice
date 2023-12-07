@@ -23,7 +23,6 @@ package eu.openanalytics.phaedra.metadataservice.client.impl;
 import eu.openanalytics.phaedra.metadataservice.client.MetadataServiceClient;
 import eu.openanalytics.phaedra.metadataservice.dto.PropertyDTO;
 import eu.openanalytics.phaedra.metadataservice.dto.TagDTO;
-import eu.openanalytics.phaedra.metadataservice.dto.TaggedObjectDTO;
 import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.util.auth.IAuthorizationService;
 import org.springframework.http.HttpEntity;

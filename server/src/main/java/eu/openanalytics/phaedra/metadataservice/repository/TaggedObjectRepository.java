@@ -20,15 +20,14 @@
  */
 package eu.openanalytics.phaedra.metadataservice.repository;
 
-import java.util.List;
-import java.util.Set;
-
+import eu.openanalytics.phaedra.metadataservice.model.TaggedObject;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import eu.openanalytics.phaedra.metadataservice.model.TaggedObject;
+import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface TaggedObjectRepository extends CrudRepository<TaggedObject, Long> {

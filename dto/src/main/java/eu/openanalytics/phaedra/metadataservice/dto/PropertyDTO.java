@@ -21,7 +21,6 @@
 package eu.openanalytics.phaedra.metadataservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
