@@ -1,0 +1,17 @@
+scalar Date
+scalar FloatNaN
+
+type TagDTO {
+    tagId: ID
+    tag: String
+}
+
+type PropertyDTO {
+    propertyId: ID
+    propertyName: String
+    propertyValue: String
+}
+
+type Query {
+    getTagsByObjectIdAndObjectClass: [TagDTO]
+}
