@@ -20,17 +20,16 @@
  */
 package eu.openanalytics.phaedra.metadataservice.client.impl;
 
-import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
-
 public class UrlFactory {
+	
     private static final String METADATA_SERVICE = "http://phaedra-metadata-service:8080/phaedra/metadata-service";
 
-    public static String tags(ObjectClass objectClass, long objectId) {
-        return String.format("%s/tags?objectId=%s&objectClass=%s", METADATA_SERVICE, objectId, objectClass.name());
+    public static String tags(String objectClass, long objectId) {
+        return String.format("%s/tags?objectId=%s&objectClass=%s", METADATA_SERVICE, objectId, objectClass);
     }
 
-    public static String properties(ObjectClass objectClass, long objectId) {
-        return String.format("%s/properties?objectId=%s&objectClass=%s", METADATA_SERVICE, objectId, objectClass.name());
+    public static String properties(String objectClass, long objectId) {
+        return String.format("%s/properties?objectId=%s&objectClass=%s", METADATA_SERVICE, objectId, objectClass);
     }
 
 
