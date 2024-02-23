@@ -12,7 +12,7 @@
 
     <artifactId>phaedra2-metadataservice</artifactId>
     <name>phaedra2-metadataservice</name>
-	<version>2.0.3-SNAPSHOT</version>
+	<version>2.0.3</version>
 
     <modules>
         <module>dto/</module>
