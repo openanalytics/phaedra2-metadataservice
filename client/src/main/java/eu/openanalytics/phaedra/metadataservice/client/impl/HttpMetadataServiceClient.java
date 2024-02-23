@@ -1,7 +1,7 @@
 /**
  * Phaedra II
  *
- * Copyright (C) 2016-2023 Open Analytics
+ * Copyright (C) 2016-2024 Open Analytics
  *
  * ===========================================================================
  *
@@ -20,20 +20,19 @@
  */
 package eu.openanalytics.phaedra.metadataservice.client.impl;
 
-import eu.openanalytics.phaedra.metadataservice.client.MetadataServiceClient;
-import eu.openanalytics.phaedra.metadataservice.dto.PropertyDTO;
-import eu.openanalytics.phaedra.metadataservice.dto.TagDTO;
-import eu.openanalytics.phaedra.metadataservice.dto.TaggedObjectDTO;
-import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
-import eu.openanalytics.phaedra.util.auth.IAuthorizationService;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
-import java.util.List;
+import eu.openanalytics.phaedra.metadataservice.client.MetadataServiceClient;
+import eu.openanalytics.phaedra.metadataservice.dto.PropertyDTO;
+import eu.openanalytics.phaedra.metadataservice.dto.TagDTO;
+import eu.openanalytics.phaedra.util.auth.IAuthorizationService;
 
 @Component
 public class HttpMetadataServiceClient implements MetadataServiceClient {
@@ -47,13 +46,13 @@ public class HttpMetadataServiceClient implements MetadataServiceClient {
     }
 
     @Override
-    public List<TagDTO> getTags(ObjectClass objectClass, long objectId) {
+    public List<TagDTO> getTags(String objectClass, long objectId) {
         var response = restTemplate.exchange(UrlFactory.tags(objectClass, objectId), HttpMethod.GET, new HttpEntity<String>(makeHttpHeaders()), TagDTO[].class);
         return Arrays.stream(response.getBody()).toList();
     }
 
     @Override
-    public List<PropertyDTO> getPorperties(ObjectClass objectClass, long objectId) {
+    public List<PropertyDTO> getProperties(String objectClass, long objectId) {
         var response = restTemplate.exchange(UrlFactory.properties(objectClass, objectId), HttpMethod.GET, new HttpEntity<String>(makeHttpHeaders()), PropertyDTO[].class);
         return Arrays.stream(response.getBody()).toList();
     }

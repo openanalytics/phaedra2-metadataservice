@@ -1,7 +1,7 @@
 /**
  * Phaedra II
  *
- * Copyright (C) 2016-2023 Open Analytics
+ * Copyright (C) 2016-2024 Open Analytics
  *
  * ===========================================================================
  *
@@ -21,7 +21,6 @@
 package eu.openanalytics.phaedra.metadataservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

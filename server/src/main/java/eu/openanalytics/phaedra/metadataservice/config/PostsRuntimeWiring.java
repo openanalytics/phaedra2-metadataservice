@@ -18,20 +18,20 @@
  * You should have received a copy of the Apache License
  * along with this program.  If not, see <http://www.apache.org/licenses/>
  */
-package eu.openanalytics.phaedra.metadataservice.client.config;
+package eu.openanalytics.phaedra.metadataservice.config;
 
-import eu.openanalytics.phaedra.metadataservice.client.MetadataServiceClient;
-import eu.openanalytics.phaedra.metadataservice.client.impl.HttpMetadataServiceClient;
-import eu.openanalytics.phaedra.util.PhaedraRestTemplate;
-import eu.openanalytics.phaedra.util.auth.IAuthorizationService;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import eu.openanalytics.phaedra.util.scalars.Scalars;
+import graphql.schema.idl.RuntimeWiring;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
+import org.springframework.stereotype.Component;
 
-@Configuration
-public class MetadataServiceClientAutoConfiguration {
-
-    @Bean
-    public MetadataServiceClient metadataServiceClient(PhaedraRestTemplate phaedraRestTemplate, IAuthorizationService authService) {
-        return new HttpMetadataServiceClient(phaedraRestTemplate, authService);
+@Component
+public class PostsRuntimeWiring implements RuntimeWiringConfigurer {
+    @Override
+    public void configure(RuntimeWiring.Builder builder) {
+        builder
+                .scalar(Scalars.dateType())
+                .scalar(Scalars.floatNaNType())
+                .build();
     }
 }

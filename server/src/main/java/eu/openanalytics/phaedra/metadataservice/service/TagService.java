@@ -1,7 +1,7 @@
 /**
  * Phaedra II
  *
- * Copyright (C) 2016-2023 Open Analytics
+ * Copyright (C) 2016-2024 Open Analytics
  *
  * ===========================================================================
  *
@@ -20,20 +20,19 @@
  */
 package eu.openanalytics.phaedra.metadataservice.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-
 import eu.openanalytics.phaedra.metadataservice.dto.TagDTO;
 import eu.openanalytics.phaedra.metadataservice.dto.TaggedObjectDTO;
 import eu.openanalytics.phaedra.metadataservice.model.Tag;
 import eu.openanalytics.phaedra.metadataservice.model.TaggedObject;
 import eu.openanalytics.phaedra.metadataservice.repository.TagRepository;
 import eu.openanalytics.phaedra.metadataservice.repository.TaggedObjectRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class TagService {
@@ -87,7 +86,7 @@ public class TagService {
     	Set<Long> tagIds = taggedObjects.stream().map(TaggedObject::getTagId).collect(Collectors.toSet());
     	List<Tag> tags = tagRepository.findByIdIn(tagIds);
     	Map<Long, Tag> tagMap = tags.stream().collect(Collectors.toMap(Tag::getId, t -> t));
-    	
+
     	Map<Long, List<TagDTO>> mappedTags = new HashMap<>();
     	for (Long objectId: objectIds) {
     		List<TagDTO> objectTags = taggedObjects.stream()
