@@ -27,6 +27,8 @@ import eu.openanalytics.phaedra.metadataservice.model.TaggedObject;
 import eu.openanalytics.phaedra.metadataservice.repository.TagRepository;
 import eu.openanalytics.phaedra.metadataservice.repository.TaggedObjectRepository;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -39,6 +41,8 @@ public class TagService {
     private final TaggedObjectRepository taggedObjectRepository;
 
     private final ModelMapper modelMapper;
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public TagService(TagRepository tagRepository, TaggedObjectRepository taggedObjectRepository, ModelMapper modelMapper) {
         this.tagRepository = tagRepository;
@@ -60,6 +64,7 @@ public class TagService {
     	if (CollectionUtils.isNotEmpty(tags)) {
             Optional<Tag> tag = tags.stream().filter(t -> t.getName().equalsIgnoreCase(taggedObjectDTO.getTag())).findFirst();
             if (tag.isPresent()){
+                logger.info("Tag found: " + tag.get());
                 taggedObjectRepository.deleteByTagIdAndObjectIdAndObjectClass(
                         tag.get().getId(), taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass());
             }
