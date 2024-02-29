@@ -60,15 +60,12 @@ public class TagService {
     }
 
     public void removeObjectTag(TaggedObjectDTO taggedObjectDTO) {
-    	List<Tag> tags = tagRepository.findByObjectId(taggedObjectDTO.getObjectId());
-    	if (CollectionUtils.isNotEmpty(tags)) {
-            Optional<Tag> tag = tags.stream().filter(t -> t.getName().equalsIgnoreCase(taggedObjectDTO.getTag())).findFirst();
-            if (tag.isPresent()){
-                logger.info("Tag found: " + tag.get());
-                taggedObjectRepository.deleteByTagIdAndObjectIdAndObjectClass(
-                        tag.get().getId(), taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass());
-            }
-    	}
+        Tag tag = tagRepository.findByName(taggedObjectDTO.getTag());
+        if (tag != null) {
+            logger.info("Tag found: " + tag);
+            taggedObjectRepository.deleteByTagIdAndObjectIdAndObjectClass(
+                    tag.getId(), taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass());
+        }
     }
 
     public List<TagDTO> getAllTags() {
