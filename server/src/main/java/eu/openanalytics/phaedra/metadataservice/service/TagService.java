@@ -63,8 +63,11 @@ public class TagService {
         Tag tag = tagRepository.findByName(taggedObjectDTO.getTag());
         if (tag != null) {
             logger.info("Tag found: " + tag);
-            taggedObjectRepository.deleteByTagIdAndObjectIdAndObjectClass(
-                    tag.getId(), taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass());
+            TaggedObject taggedObject = taggedObjectRepository.findByObjectIdAndObjectClassAndTagId(taggedObjectDTO.getObjectId(), taggedObjectDTO.getTag(), tag.getId());
+            if (taggedObject != null) {
+                logger.info("Tagged object found: " + taggedObject);
+                taggedObjectRepository.delete(taggedObject);
+            }
         }
     }
 

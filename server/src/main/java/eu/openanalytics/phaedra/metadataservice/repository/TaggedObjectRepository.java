@@ -37,4 +37,6 @@ public interface TaggedObjectRepository extends CrudRepository<TaggedObject, Lon
 	void deleteByTagIdAndObjectIdAndObjectClass(Long tagId, Long objectId, String objectClass);
 
     List<TaggedObject> findByObjectIdInAndObjectClass(Set<Long> objectIds, String objectClass);
+
+	TaggedObject findByObjectIdAndObjectClassAndTagId(long objectId, String objectClass, long tagId);
 }
