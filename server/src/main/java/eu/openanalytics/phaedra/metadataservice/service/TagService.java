@@ -26,12 +26,10 @@ import eu.openanalytics.phaedra.metadataservice.model.Tag;
 import eu.openanalytics.phaedra.metadataservice.model.TaggedObject;
 import eu.openanalytics.phaedra.metadataservice.repository.TagRepository;
 import eu.openanalytics.phaedra.metadataservice.repository.TaggedObjectRepository;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,10 +56,13 @@ public class TagService {
     }
 
     public void removeObjectTag(TaggedObjectDTO taggedObjectDTO) {
-    	Tag tag = tagRepository.findByName(taggedObjectDTO.getTag());
-    	if (tag != null) {
-    		taggedObjectRepository.deleteByTagIdAndObjectIdAndObjectClass(
-    				tag.getId(), taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass());
+    	List<Tag> tags = tagRepository.findByObjectId(taggedObjectDTO.getObjectId());
+    	if (CollectionUtils.isNotEmpty(tags)) {
+            Optional<Tag> tag = tags.stream().filter(t -> t.getName().equalsIgnoreCase(taggedObjectDTO.getTag())).findFirst();
+            if (tag.isPresent()){
+                taggedObjectRepository.deleteByTagIdAndObjectIdAndObjectClass(
+                        tag.get().getId(), taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass());
+            }
     	}
     }
 
