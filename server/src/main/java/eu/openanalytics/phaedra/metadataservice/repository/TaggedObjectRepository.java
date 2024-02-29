@@ -38,6 +38,6 @@ public interface TaggedObjectRepository extends CrudRepository<TaggedObject, Lon
 
     List<TaggedObject> findByObjectIdInAndObjectClass(Set<Long> objectIds, String objectClass);
 
-	@Query("select * from hca_tagged_object where object_id = :objectId and object_class = :objectClass and tag_id = :tagId")
+	@Query("select * from hca_tagged_object where object_id = :objectId and object_class = ':objectClass' and tag_id = :tagId")
 	TaggedObject findByObjectIdAndObjectClassAndTagId(long objectId, String objectClass, long tagId);
 }
