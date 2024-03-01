@@ -62,14 +62,11 @@ public class TagService {
     public void removeObjectTag(TaggedObjectDTO taggedObjectDTO) {
         Tag tag = tagRepository.findByName(taggedObjectDTO.getTag());
         if (tag != null) {
-            logger.info("Tag found: " + tag);
-            logger.info("Tagged Object DTO: " + taggedObjectDTO);
-            TaggedObject taggedObject = taggedObjectRepository.findByObjectIdAndObjectClassAndTagId(taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass(), tag.getId());
-            logger.info("Tagged object found: " + taggedObject);
-            if (taggedObject != null) {
-                logger.info("Tagged object found: " + taggedObject);
-                taggedObjectRepository.delete(taggedObject);
-            }
+            taggedObjectRepository.deleteByTagIdAndObjectIdAndObjectClass(tag.getId(), taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass());
+//            TaggedObject taggedObject = taggedObjectRepository.findByObjectIdAndObjectClassAndTagId(taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass(), tag.getId());
+//            if (taggedObject != null) {
+//                taggedObjectRepository.delete(taggedObject);
+//            }
         }
     }
 
