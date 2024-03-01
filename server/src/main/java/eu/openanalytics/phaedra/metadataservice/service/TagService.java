@@ -26,12 +26,12 @@ import eu.openanalytics.phaedra.metadataservice.model.Tag;
 import eu.openanalytics.phaedra.metadataservice.model.TaggedObject;
 import eu.openanalytics.phaedra.metadataservice.repository.TagRepository;
 import eu.openanalytics.phaedra.metadataservice.repository.TaggedObjectRepository;
-import org.apache.commons.collections4.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,8 +41,6 @@ public class TagService {
     private final TaggedObjectRepository taggedObjectRepository;
 
     private final ModelMapper modelMapper;
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public TagService(TagRepository tagRepository, TaggedObjectRepository taggedObjectRepository, ModelMapper modelMapper) {
         this.tagRepository = tagRepository;
@@ -62,27 +60,26 @@ public class TagService {
     public void removeObjectTag(TaggedObjectDTO taggedObjectDTO) {
         Tag tag = tagRepository.findByName(taggedObjectDTO.getTag());
         if (tag != null) {
-            taggedObjectRepository.deleteByTagIdAndObjectIdAndObjectClass(tag.getId(), taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass());
-//            TaggedObject taggedObject = taggedObjectRepository.findByObjectIdAndObjectClassAndTagId(taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass(), tag.getId());
-//            if (taggedObject != null) {
-//                taggedObjectRepository.delete(taggedObject);
-//            }
+            TaggedObject taggedObject = taggedObjectRepository.findByObjectIdAndObjectClassAndTagId(taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass(), tag.getId());
+            if (taggedObject != null) {
+                taggedObjectRepository.delete(taggedObject);
+            }
         }
     }
 
     public List<TagDTO> getAllTags() {
         List<Tag> result = (List<Tag>) tagRepository.findAll();
-        return result.stream().map(modelMapper::map).collect(Collectors.toList());
+        return result.stream().map(modelMapper::map).toList();
     }
 
     public List<TagDTO> getTagsByObjectClass(String objectClass) {
         List<Tag> result = tagRepository.findByObjectClass(objectClass);
-        return result.stream().map(modelMapper::map).collect(Collectors.toList());
+        return result.stream().map(modelMapper::map).toList();
     }
 
     public List<TagDTO> getTagsByObjectIdAndObjectClass(Long objectId, String objectClass) {
         List<Tag> result = tagRepository.findByObjectIdAndObjectClass(objectId, objectClass);
-        return result.stream().map(modelMapper::map).collect(Collectors.toList());
+        return result.stream().map(modelMapper::map).toList();
     }
 
     public Map<Long, List<TagDTO>> getTagsByObjectIdsAndObjectClass(Set<Long> objectIds, String objectClass) {
@@ -95,9 +92,9 @@ public class TagService {
     	Map<Long, List<TagDTO>> mappedTags = new HashMap<>();
     	for (Long objectId: objectIds) {
     		List<TagDTO> objectTags = taggedObjects.stream()
-    				.filter(to -> to.getObjectId() == objectId)
+    				.filter(to -> to.getObjectId().equals(objectId))
     				.map(to -> tagMap.get(to.getTagId()))
-    				.map(t -> modelMapper.map(t)).toList();
+    				.map(modelMapper::map).toList();
     		mappedTags.put(objectId, objectTags);
     	}
     	return mappedTags;
