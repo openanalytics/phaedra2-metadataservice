@@ -35,15 +35,15 @@ public interface TagRepository extends CrudRepository<Tag, Long> {
 
     List<Tag> findByIdIn(Set<Long> ids);
 
-    @Query("select * from hca_tag as ht inner join hca_tagged_object as hto on ht.id = hto.tag_id " +
+    @Query("select ht.* from hca_tag as ht inner join hca_tagged_object as hto on ht.id = hto.tag_id " +
             "where hto.object_id = :objectId")
     List<Tag> findByObjectId(Long objectId);
 
-    @Query("select * from hca_tag as ht inner join hca_tagged_object as hto on ht.id = hto.tag_id " +
+    @Query("select ht.* from hca_tag as ht inner join hca_tagged_object as hto on ht.id = hto.tag_id " +
             "where hto.object_class = :objectClass")
     List<Tag> findByObjectClass(String objectClass);
 
-    @Query("select * from hca_tag as ht inner join hca_tagged_object as hto on ht.id = hto.tag_id " +
+    @Query("select ht.* from hca_tag as ht inner join hca_tagged_object as hto on ht.id = hto.tag_id " +
             "where hto.object_id = :objectId " +
             "and hto.object_class = :objectClass")
     List<Tag> findByObjectIdAndObjectClass(Long objectId, String objectClass);
