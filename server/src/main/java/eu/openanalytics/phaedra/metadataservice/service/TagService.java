@@ -64,7 +64,7 @@ public class TagService {
         if (tag != null) {
             logger.info("Tag found: " + tag);
             logger.info("Tagged Object DTO: " + taggedObjectDTO);
-            TaggedObject taggedObject = taggedObjectRepository.findByObjectIdAndObjectClassAndTagId(taggedObjectDTO.getObjectId(), taggedObjectDTO.getTag(), tag.getId());
+            TaggedObject taggedObject = taggedObjectRepository.findByObjectIdAndObjectClassAndTagId(taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass(), tag.getId());
             logger.info("Tagged object found: " + taggedObject);
             if (taggedObject != null) {
                 logger.info("Tagged object found: " + taggedObject);
