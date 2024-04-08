@@ -21,6 +21,8 @@
 package eu.openanalytics.phaedra.metadataservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import eu.openanalytics.phaedra.metadataservice.enumeration.Actor;
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
@@ -39,11 +41,12 @@ public class Property {
     private Long objectId;
     @Column("object_class")
     @NotNull
-    private String objectClass;
+    private ObjectClass objectClass;
     @Column("property_name")
     @NotNull
     private String propertyName;
     @Column("property_value")
     @NotNull
     private String propertyValue;
+    private Actor actor = Actor.USER;
 }

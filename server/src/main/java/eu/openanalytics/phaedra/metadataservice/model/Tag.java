@@ -20,10 +20,13 @@
  */
 package eu.openanalytics.phaedra.metadataservice.model;
 
+import eu.openanalytics.phaedra.metadataservice.enumeration.Actor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -32,9 +35,19 @@ public class Tag {
 
 	@Id
     private Long id;
+    @NotNull
     private String name;
+    @NotNull
+    private Actor actor = Actor.USER;
+    @NotNull
+    private String color = "#4caf50";
 
     public Tag(String name) {
         this.name = name;
+    }
+
+    public Tag(String name, Actor actor) {
+        this.name = name;
+        this.actor = actor;
     }
 }

@@ -38,6 +38,7 @@ public class ModelMapper {
                 map().setObjectId(source.getObjectId());
                 map().setPropertyValue(source.getPropertyValue());
                 map().setObjectClass(source.getObjectClass());
+                map().setActor(source.getActor());
             }
         };
         modelMapper.addMappings(propertyMap);
@@ -48,6 +49,7 @@ public class ModelMapper {
                 map().setObjectId(source.getObjectId());
                 map().setPropertyValue(source.getPropertyValue());
                 map().setObjectClass(source.getObjectClass());
+                map().setActor(source.getActor());
                 map().setId(null);
             }
         };
