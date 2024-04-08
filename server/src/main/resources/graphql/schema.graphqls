@@ -1,15 +1,33 @@
 scalar Date
 scalar FloatNaN
 
+enum ObjectClass {
+    WELL
+    PLATE
+    EXPERIMENT
+    FEATURE
+    PROTOCOL
+    PROJECT
+    PLATE_TEMPLATE
+    WELL_TEMPLATE
+}
+
+enum Actor {
+    USER
+    SYSTEM
+}
+
 type TagDTO {
     tagId: ID
     tag: String
+    actor: Actor
 }
 
 type PropertyDTO {
     propertyId: ID
     propertyName: String
     propertyValue: String
+    actor: Actor
 }
 
 type Query {

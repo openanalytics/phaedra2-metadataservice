@@ -23,3 +23,5 @@ databaseChangeLog:
       changes:
         - sql:
             sql: alter table hca_property alter column object_class type objectclass using object_class::objectclass
+        - sql:
+            sql: alter table hca_tagged_object alter column object_class type objectclass using object_class::objectclass
