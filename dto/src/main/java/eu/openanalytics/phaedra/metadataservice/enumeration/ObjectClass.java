@@ -28,5 +28,6 @@ public enum ObjectClass {
     PROTOCOL,
     PROJECT,
     PLATE_TEMPLATE,
-    WELL_TEMPLATE
+    WELL_TEMPLATE,
+    MEASUREMENT
 }
