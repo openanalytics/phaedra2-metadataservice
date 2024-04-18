@@ -52,10 +52,16 @@ public class TagService {
     public void addObjectTag(TaggedObjectDTO taggedObjectDTO) {
         Tag tag = tagRepository.findByName(taggedObjectDTO.getTag());
         if (tag == null) {
-            tag = tagRepository.save(new Tag(taggedObjectDTO.getTag()));
+            tag = tagRepository.save(Tag.builder().name(taggedObjectDTO.getTag()).actor(taggedObjectDTO.getActor()).build());
         }
-        TaggedObject taggedObject = new TaggedObject(taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass(), tag.getId());
-        taggedObjectRepository.save(taggedObject);
+
+        taggedObjectRepository.save(
+                TaggedObject.builder()
+                        .objectId(taggedObjectDTO.getObjectId())
+                        .objectClass(taggedObjectDTO.getObjectClass())
+                        .tagId(tag.getId())
+                        .build()
+        );
     }
 
     public void removeObjectTag(TaggedObjectDTO taggedObjectDTO) {

@@ -68,7 +68,11 @@ public class TagControllerTest {
 
     @Test
     void addTag() throws Exception {
-        TaggedObjectDTO taggedObject = new TaggedObjectDTO(1000L, ObjectClass.PROTOCOL, "protTag1");
+        TaggedObjectDTO taggedObject = TaggedObjectDTO.builder()
+                .objectId(1000L)
+                .objectClass(ObjectClass.PROTOCOL)
+                .tag("protTag1")
+                .build();
 
         String requestBody = objectMapper.writeValueAsString(taggedObject);
         this.mockMvc.perform(post("/tags").contentType(MediaType.APPLICATION_JSON).content(requestBody))
@@ -90,7 +94,11 @@ public class TagControllerTest {
 
 //    @Test
     void removeTag() throws Exception{
-        TaggedObjectDTO taggedObject1 = new TaggedObjectDTO(1000L, ObjectClass.PROJECT, "Tag0");
+        TaggedObjectDTO taggedObject1 = TaggedObjectDTO.builder()
+                .objectId(1000L)
+                .objectClass(ObjectClass.PROJECT)
+                .tag("Tag0")
+                .build();
         String requestBody = objectMapper.writeValueAsString(taggedObject1);
         this.mockMvc.perform(delete("/tags")
                         .contentType(MediaType.APPLICATION_JSON).content(requestBody))
@@ -109,7 +117,11 @@ public class TagControllerTest {
         assertThat(tags).isNotEmpty();
         assertThat(tags.size()).isEqualTo(1);
 
-        TaggedObjectDTO taggedObject2 = new TaggedObjectDTO(1000L, ObjectClass.PROJECT, "Tag1");
+        TaggedObjectDTO taggedObject2 = TaggedObjectDTO.builder()
+                .objectId(1000L)
+                .objectClass(ObjectClass.PROJECT)
+                .tag("Tag1")
+                .build();
         requestBody = objectMapper.writeValueAsString(taggedObject2);
         this.mockMvc.perform(delete("/tags")
                         .contentType(MediaType.APPLICATION_JSON).content(requestBody))
@@ -167,7 +179,11 @@ public class TagControllerTest {
 
     @Test
     void getTagsByObjectIdAndObjectClass() throws Exception {
-        TaggedObjectDTO taggedObject = new TaggedObjectDTO(2000L, ObjectClass.PLATE, "Tag9");
+        TaggedObjectDTO taggedObject = TaggedObjectDTO.builder()
+                .objectId(2000L)
+                .objectClass(ObjectClass.PLATE)
+                .tag("Tag9")
+                .build();
         MvcResult mvcResult = this.mockMvc.perform(get("/tags")
                         .param("objectId", valueOf(taggedObject.getObjectId()))
                         .param("objectClass", taggedObject.getObjectClass().name()))
