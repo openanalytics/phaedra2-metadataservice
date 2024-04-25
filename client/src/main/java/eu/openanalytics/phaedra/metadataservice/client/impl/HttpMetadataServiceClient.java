@@ -50,22 +50,20 @@ public class HttpMetadataServiceClient implements MetadataServiceClient {
 
     @Override
     public void addTags(String objectClass, long objectId, List<String> tags) {
-        for (String tag: tags) {
-            TaggedObjectDTO taggedObjectDTO = TaggedObjectDTO.builder()
-                    .objectId(objectId)
-                    .objectClass(ObjectClass.valueOf(objectClass))
-                    .tag(tag)
-                    .build();
-            restTemplate.exchange(UrlFactory.tags(), HttpMethod.POST, new HttpEntity<>(taggedObjectDTO, makeHttpHeaders()), Void.class);
-        }
+        tags.stream()
+                .map(tag -> TaggedObjectDTO.builder()
+                        .objectId(objectId)
+                        .objectClass(ObjectClass.valueOf(objectClass))
+                        .tag(tag)
+                        .build())
+                .forEach(taggedObjectDTO -> restTemplate.exchange(UrlFactory.tags(), HttpMethod.POST, new HttpEntity<>(taggedObjectDTO, makeHttpHeaders()), Void.class));
     }
 
     @Override
     public void addProperties(String objectClass, long objectId, Map<String, String> properties) {
-        for (String propertyName: properties.keySet()) {
-            PropertyDTO propertyDTO = new PropertyDTO(propertyName, properties.get(propertyName), objectId, ObjectClass.valueOf(objectClass));
-            restTemplate.exchange(UrlFactory.properties(), HttpMethod.POST, new HttpEntity<>(propertyDTO, makeHttpHeaders()), PropertyDTO.class);
-        }
+        properties.keySet().stream()
+                .map(propertyName -> new PropertyDTO(propertyName, properties.get(propertyName), objectId, ObjectClass.valueOf(objectClass)))
+                .forEach(propertyDTO -> restTemplate.exchange(UrlFactory.properties(), HttpMethod.POST, new HttpEntity<>(propertyDTO, makeHttpHeaders()), PropertyDTO.class));
     }
 
     @Override
