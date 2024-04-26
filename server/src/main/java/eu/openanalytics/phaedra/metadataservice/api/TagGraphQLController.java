@@ -21,6 +21,7 @@
 package eu.openanalytics.phaedra.metadataservice.api;
 
 import eu.openanalytics.phaedra.metadataservice.dto.TagDTO;
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.metadataservice.service.TagService;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -54,7 +55,7 @@ public class TagGraphQLController {
 //    }
 
     @QueryMapping
-    public List<TagDTO> getTagsByObjectIdAndObjectClass(@Argument long objectId, @Argument String objectClass) {
+    public List<TagDTO> getTagsByObjectIdAndObjectClass(@Argument long objectId, @Argument ObjectClass objectClass) {
     	List<TagDTO> result = tagService.getTagsByObjectIdAndObjectClass(objectId, objectClass);
         return result;
     }

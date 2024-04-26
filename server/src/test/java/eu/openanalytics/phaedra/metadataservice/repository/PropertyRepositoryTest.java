@@ -20,6 +20,7 @@
  */
 package eu.openanalytics.phaedra.metadataservice.repository;
 
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.metadataservice.model.Property;
 import eu.openanalytics.phaedra.metadataservice.support.Containers;
 import org.junit.jupiter.api.Test;
@@ -73,17 +74,17 @@ public class PropertyRepositoryTest {
 
     @Test
     public void queryProperties2() {
-        List<Property> result1 = propertyRepository.findAll(null, null, "PROTOCOL");
+        List<Property> result1 = propertyRepository.findAll(null, null, ObjectClass.PROTOCOL);
         assertThat(result1).isNotNull();
         assertThat(result1).isNotEmpty();
         assertThat(result1.size() == 3).isTrue();
 
-        List<Property> result2 = propertyRepository.findAll(null, null, "PROJECT");
+        List<Property> result2 = propertyRepository.findAll(null, null, ObjectClass.PROJECT);
         assertThat(result2).isNotNull();
         assertThat(result2).isNotEmpty();
         assertThat(result2.size() == 3).isTrue();
 
-        List<Property> result3 = propertyRepository.findAll(null, null, "WELL");
+        List<Property> result3 = propertyRepository.findAll(null, null, ObjectClass.WELL);
         assertThat(result3).isNotNull();
         assertThat(result3).isNotEmpty();
         assertThat(result3.size() == 3).isTrue();

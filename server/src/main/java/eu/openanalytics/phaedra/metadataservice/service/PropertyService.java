@@ -21,6 +21,7 @@
 package eu.openanalytics.phaedra.metadataservice.service;
 
 import eu.openanalytics.phaedra.metadataservice.dto.PropertyDTO;
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.metadataservice.model.Property;
 import eu.openanalytics.phaedra.metadataservice.repository.PropertyRepository;
 import org.springframework.stereotype.Service;
@@ -55,13 +56,13 @@ public class PropertyService {
         return modelMapper.map(propertyRepository.save(updatedProperty));
     }
 
-    public PropertyDTO deleteProperty(String propertyName, Long objectId, String objectClass) {
+    public PropertyDTO deleteProperty(String propertyName, Long objectId, ObjectClass objectClass) {
         Property property = propertyRepository.findByObjectIdAndPropertyNameAndObjectClass(objectId, propertyName, objectClass);
         propertyRepository.delete(property);
         return modelMapper.map(property);
     }
 
-    public PropertyDTO getProperty(String propertyName, Long objectId, String objectClass) {
+    public PropertyDTO getProperty(String propertyName, Long objectId, ObjectClass objectClass) {
         Property property = propertyRepository.findByObjectIdAndPropertyNameAndObjectClass(objectId, propertyName, objectClass);
         return modelMapper.map(property);
     }
@@ -72,7 +73,7 @@ public class PropertyService {
                 .collect(Collectors.toList());
     }
 
-    public Map<Long, List<PropertyDTO>> getProperties(Set<Long> objectIds, String objectClass) {
+    public Map<Long, List<PropertyDTO>> getProperties(Set<Long> objectIds, ObjectClass objectClass) {
     	List<Property> props = propertyRepository.findByObjectIdInAndObjectClass(objectIds, objectClass);
     	return props.stream().map(modelMapper::map).collect(Collectors.groupingBy(PropertyDTO::getObjectId));
     }

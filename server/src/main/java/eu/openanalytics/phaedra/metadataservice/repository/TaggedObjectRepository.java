@@ -20,6 +20,7 @@
  */
 package eu.openanalytics.phaedra.metadataservice.repository;
 
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.metadataservice.model.TaggedObject;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
@@ -33,8 +34,12 @@ import java.util.Set;
 public interface TaggedObjectRepository extends CrudRepository<TaggedObject, Long> {
 
 	@Modifying
-	@Query("delete from hca_tagged_object hto where hto.tag_id = :tagId and hto.object_id = :objectId and hto.object_class = :objectClass")
-	void deleteByTagIdAndObjectIdAndObjectClass(Long tagId, Long objectId, String objectClass);
+	@Query("delete from hca_tagged_object hto where hto.tag_id = :tagId and hto.object_id = :objectId and hto.object_class = cast(:objectClass as objectclass)")
+	void deleteByTagIdAndObjectIdAndObjectClass(Long tagId, Long objectId, ObjectClass objectClass);
 
-    List<TaggedObject> findByObjectIdInAndObjectClass(Set<Long> objectIds, String objectClass);
+	@Query("select * from hca_tagged_object where object_id in (:objectIds) and (:objectClass is null or object_class = cast(:objectClass as objectclass))")
+    List<TaggedObject> findByObjectIdInAndObjectClass(Set<Long> objectIds, ObjectClass objectClass);
+
+	@Query("select * from hca_tagged_object where object_id = :objectId and object_class = cast(:objectClass as objectclass) and tag_id = :tagId")
+	TaggedObject findByObjectIdAndObjectClassAndTagId(long objectId, ObjectClass objectClass, long tagId);
 }

@@ -22,6 +22,7 @@ package eu.openanalytics.phaedra.metadataservice.api;
 
 import eu.openanalytics.phaedra.metadataservice.dto.TagDTO;
 import eu.openanalytics.phaedra.metadataservice.dto.TaggedObjectDTO;
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.metadataservice.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,7 +53,7 @@ public class  TagController {
     @GetMapping
     public ResponseEntity<?> getTagsByObjectIdAndObjectClass(
     		@RequestParam(value = "objectId", required = false) Long objectId,
-    		@RequestParam(value = "objectClass", required = false) String objectClass) {
+    		@RequestParam(value = "objectClass", required = false) ObjectClass objectClass) {
 
     	List<TagDTO> tags = null;
 

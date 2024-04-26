@@ -21,16 +21,21 @@
 package eu.openanalytics.phaedra.metadataservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import eu.openanalytics.phaedra.metadataservice.enumeration.Actor;
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TaggedObjectDTO {
     private Long objectId;
-    private String objectClass;
+    private ObjectClass objectClass;
     private String tag;
+    private Actor actor;
 }

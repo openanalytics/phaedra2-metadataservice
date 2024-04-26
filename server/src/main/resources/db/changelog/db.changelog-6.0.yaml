@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: sberberovic
+      changes:
+        - sql:
+            sql: create type actortype as enum ('USER','SYSTEM')
+        - sql:
+            sql: create cast (character varying as actortype) with inout as implicit
+        - sql:
+            sql: alter table hca_property add column actor actortype
+  - changeSet:
+      id: 2
+      author: sberberovic
+      changes:
+        - sql:
+            sql: alter table hca_tag add column actor actortype
+        - sql:
+            sql: alter table hca_tag add column color varchar(7)
+  - changeSet:
+      id: 3
+      author: sberberovic
+      changes:
+        - sql:
+            sql: alter type objectclass add value if not exists 'MEASUREMENT'
+        - sql:
+            sql: alter table hca_property alter column object_class type objectclass using object_class::objectclass
+        - sql:
+            sql: alter table hca_tagged_object alter column object_class type objectclass using object_class::objectclass

@@ -22,6 +22,7 @@ package eu.openanalytics.phaedra.metadataservice.api;
 
 import eu.openanalytics.phaedra.metadataservice.dto.PropertyDTO;
 import eu.openanalytics.phaedra.metadataservice.dto.TagDTO;
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.metadataservice.service.PropertyService;
 import eu.openanalytics.phaedra.metadataservice.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,10 +47,9 @@ public class MetadataController {
 
     @GetMapping
     public ResponseEntity<?> getMetadata(
-    		@RequestParam(value = "objectClass") String objectClass,
-    		@RequestParam(value = "objectId") String objectId) {
+    		@RequestParam(value = "objectClass") ObjectClass objectClass,
+    		@RequestParam(value = "objectId") Set<Long> objectIds) {
 
-    	Set<Long> objectIds = Arrays.stream(objectId.split(",")).map(id -> Long.parseLong(id)).collect(Collectors.toSet());
     	if (objectIds.isEmpty()) return ResponseEntity.badRequest().body("Must specify at least one object ID");
 
     	Map<Long, List<TagDTO>> tagsPerObject = tagService.getTagsByObjectIdsAndObjectClass(objectIds, objectClass);

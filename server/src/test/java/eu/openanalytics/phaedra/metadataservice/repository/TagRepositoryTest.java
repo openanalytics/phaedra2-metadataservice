@@ -20,6 +20,7 @@
  */
 package eu.openanalytics.phaedra.metadataservice.repository;
 
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.metadataservice.model.Tag;
 import eu.openanalytics.phaedra.metadataservice.support.Containers;
 import org.junit.jupiter.api.Test;
@@ -83,27 +84,27 @@ public class TagRepositoryTest {
 
     @Test
     public void findByObjectClass() {
-        List<Tag> projectTags = tagRepository.findByObjectClass("PROJECT");
+        List<Tag> projectTags = tagRepository.findByObjectClass(ObjectClass.PROJECT);
         assertThat(projectTags).isNotNull();
         assertThat(projectTags).isNotEmpty();
         assertThat(projectTags.size()).isEqualTo(2);
 
-        List<Tag> protocolTags = tagRepository.findByObjectClass("PROTOCOL");
+        List<Tag> protocolTags = tagRepository.findByObjectClass(ObjectClass.PROTOCOL);
         assertThat(protocolTags).isNotNull();
         assertThat(protocolTags).isNotEmpty();
         assertThat(protocolTags.size()).isEqualTo(2);
 
-        List<Tag> experimentTags = tagRepository.findByObjectClass("EXPERIMENT");
+        List<Tag> experimentTags = tagRepository.findByObjectClass(ObjectClass.EXPERIMENT);
         assertThat(experimentTags).isNotNull();
         assertThat(experimentTags).isNotEmpty();
         assertThat(experimentTags.size()).isEqualTo(2);
 
-        List<Tag> featureTags = tagRepository.findByObjectClass("FEATURE");
+        List<Tag> featureTags = tagRepository.findByObjectClass(ObjectClass.FEATURE);
         assertThat(featureTags).isNotNull();
         assertThat(featureTags).isNotEmpty();
         assertThat(featureTags.size()).isEqualTo(2);
 
-        List<Tag> plateTags = tagRepository.findByObjectClass("PLATE");
+        List<Tag> plateTags = tagRepository.findByObjectClass(ObjectClass.PLATE);
         assertThat(plateTags).isNotNull();
         assertThat(plateTags).isNotEmpty();
         assertThat(plateTags.size()).isEqualTo(2);
@@ -111,17 +112,14 @@ public class TagRepositoryTest {
 
     @Test
     public void findByObjectIdAndObjectClass() {
-        List<Tag> tags = tagRepository.findByObjectIdAndObjectClass(1000L, "PROJECT");
+        List<Tag> tags = tagRepository.findByObjectIdAndObjectClass(1000L, ObjectClass.PROJECT);
         assertThat(tags).isNotNull();
         assertThat(tags).isNotEmpty();
         assertThat(tags.size()).isEqualTo(2);
 
 
-        List<Tag> tags1 = tagRepository.findByObjectIdAndObjectClass(3000L, "WELL");
+        List<Tag> tags1 = tagRepository.findByObjectIdAndObjectClass(3000L, ObjectClass.WELL);
         assertThat(tags1).isNotNull();
         assertThat(tags1).isEmpty();
     }
-
-
-
 }

@@ -23,6 +23,7 @@ package eu.openanalytics.phaedra.metadataservice.api;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.openanalytics.phaedra.metadataservice.dto.PropertyDTO;
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.metadataservice.support.Containers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +66,7 @@ public class PropertyControllerTest {
 
     @Test
     public void createProperty() throws Exception {
-        PropertyDTO property = new PropertyDTO("ProtocolProperty1", "Newly created protocol", 1001L, "PROTOCOL");
+        PropertyDTO property = new PropertyDTO("ProtocolProperty1", "Newly created protocol", 1001L, ObjectClass.PROTOCOL);
 
         String requestBody = objectMapper.writeValueAsString(property);
         MvcResult mvcResult = this.mockMvc.perform(post("/properties").contentType(MediaType.APPLICATION_JSON).content(requestBody))
@@ -76,17 +77,17 @@ public class PropertyControllerTest {
         PropertyDTO propertyDTO = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), PropertyDTO.class);
         assertThat(propertyDTO).isNotNull();
         assertThat(propertyDTO.getObjectId()).isEqualTo(1001L);
-        assertThat(propertyDTO.getObjectClass()).isEqualTo("PROTOCOL");
+        assertThat(propertyDTO.getObjectClass()).isEqualTo(ObjectClass.PROTOCOL);
     }
 
     @Test
     public void deleteProtocol() throws Exception {
-        PropertyDTO propertyDTO = new PropertyDTO("NumberOfExperiments", 1000L, "PROJECT");
+        PropertyDTO propertyDTO = new PropertyDTO("NumberOfExperiments", 1000L, ObjectClass.PROJECT);
 
         MvcResult mvcResult = this.mockMvc.perform(delete("/properties")
                         .param("propertyName", propertyDTO.getPropertyName())
                         .param("objectId", String.valueOf(propertyDTO.getObjectId()))
-                        .param("objectClass", propertyDTO.getObjectClass()))
+                        .param("objectClass", propertyDTO.getObjectClass().name()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -102,12 +103,11 @@ public class PropertyControllerTest {
     public void updateProperty() throws Exception {
         String propertyName = "NumberOfFeatures";
         Long objectId = 2000L;
-        String objectClass = "PROTOCOL";
 
         MvcResult mvcResult = this.mockMvc.perform(get("/properties")
                         .param("propertyName", propertyName)
                         .param("objectId", String.valueOf(objectId))
-                        .param("objectClass", objectClass))
+                        .param("objectClass", ObjectClass.PROTOCOL.name()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -120,7 +120,7 @@ public class PropertyControllerTest {
         assertThat(existingPropertyDTO).isNotNull();
         assertThat(existingPropertyDTO.getPropertyName()).isEqualTo(propertyName);
         assertThat(existingPropertyDTO.getObjectId()).isEqualTo(objectId);
-        assertThat(existingPropertyDTO.getObjectClass()).isEqualTo(objectClass);
+        assertThat(existingPropertyDTO.getObjectClass()).isEqualTo(ObjectClass.PROTOCOL);
 
         existingPropertyDTO.setPropertyValue("15");
 

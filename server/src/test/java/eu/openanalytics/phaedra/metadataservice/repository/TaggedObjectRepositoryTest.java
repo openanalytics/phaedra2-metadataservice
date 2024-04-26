@@ -20,6 +20,7 @@
  */
 package eu.openanalytics.phaedra.metadataservice.repository;
 
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.metadataservice.model.TaggedObject;
 import eu.openanalytics.phaedra.metadataservice.support.Containers;
 import org.junit.jupiter.api.Test;
@@ -62,7 +63,7 @@ public class TaggedObjectRepositoryTest {
     void findTaggedObjectByObjectIdAndObjectClass() {
         Long objectId = 2000L;
 
-        List<TaggedObject> result = taggedObjectRepository.findByObjectIdInAndObjectClass(Collections.singleton(objectId), "PLATE");
+        List<TaggedObject> result = taggedObjectRepository.findByObjectIdInAndObjectClass(Collections.singleton(objectId), ObjectClass.PLATE);
         assertThat(result).isNotNull();
         assertThat(result).isNotEmpty();
         assertThat(result).size().isEqualTo(1);

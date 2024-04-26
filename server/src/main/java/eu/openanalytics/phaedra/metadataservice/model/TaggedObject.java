@@ -21,12 +21,15 @@
 package eu.openanalytics.phaedra.metadataservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
+@Builder
 @Table("hca_tagged_object")
 public class TaggedObject {
     @Id
@@ -35,13 +38,7 @@ public class TaggedObject {
     @Column("object_id")
     private Long objectId;
     @Column("object_class")
-    private String objectClass;
+    private ObjectClass objectClass;
     @Column("tag_id")
     private Long tagId;
-
-    public TaggedObject(Long objectId, String objectClass, Long tagId) {
-        this.objectId = objectId;
-        this.objectClass = objectClass;
-        this.tagId = tagId;
-    }
 }

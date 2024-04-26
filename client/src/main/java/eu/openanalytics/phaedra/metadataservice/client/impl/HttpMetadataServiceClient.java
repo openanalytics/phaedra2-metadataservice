@@ -22,7 +22,10 @@ package eu.openanalytics.phaedra.metadataservice.client.impl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
+import eu.openanalytics.phaedra.metadataservice.dto.TaggedObjectDTO;
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -43,6 +46,24 @@ public class HttpMetadataServiceClient implements MetadataServiceClient {
     public HttpMetadataServiceClient(RestTemplate restTemplate, IAuthorizationService authService) {
         this.restTemplate = restTemplate;
         this.authService = authService;
+    }
+
+    @Override
+    public void addTags(String objectClass, long objectId, List<String> tags) {
+        tags.stream()
+                .map(tag -> TaggedObjectDTO.builder()
+                        .objectId(objectId)
+                        .objectClass(ObjectClass.valueOf(objectClass))
+                        .tag(tag)
+                        .build())
+                .forEach(taggedObjectDTO -> restTemplate.exchange(UrlFactory.tags(), HttpMethod.POST, new HttpEntity<>(taggedObjectDTO, makeHttpHeaders()), Void.class));
+    }
+
+    @Override
+    public void addProperties(String objectClass, long objectId, Map<String, String> properties) {
+        properties.keySet().stream()
+                .map(propertyName -> new PropertyDTO(propertyName, properties.get(propertyName), objectId, ObjectClass.valueOf(objectClass)))
+                .forEach(propertyDTO -> restTemplate.exchange(UrlFactory.properties(), HttpMethod.POST, new HttpEntity<>(propertyDTO, makeHttpHeaders()), PropertyDTO.class));
     }
 
     @Override

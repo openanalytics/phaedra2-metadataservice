@@ -22,6 +22,7 @@ package eu.openanalytics.phaedra.metadataservice.service;
 
 import eu.openanalytics.phaedra.metadataservice.dto.TagDTO;
 import eu.openanalytics.phaedra.metadataservice.dto.TaggedObjectDTO;
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.metadataservice.model.Tag;
 import eu.openanalytics.phaedra.metadataservice.model.TaggedObject;
 import eu.openanalytics.phaedra.metadataservice.repository.TagRepository;
@@ -51,36 +52,44 @@ public class TagService {
     public void addObjectTag(TaggedObjectDTO taggedObjectDTO) {
         Tag tag = tagRepository.findByName(taggedObjectDTO.getTag());
         if (tag == null) {
-            tag = tagRepository.save(new Tag(taggedObjectDTO.getTag()));
+            tag = tagRepository.save(Tag.builder().name(taggedObjectDTO.getTag()).actor(taggedObjectDTO.getActor()).build());
         }
-        TaggedObject taggedObject = new TaggedObject(taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass(), tag.getId());
-        taggedObjectRepository.save(taggedObject);
+
+        taggedObjectRepository.save(
+                TaggedObject.builder()
+                        .objectId(taggedObjectDTO.getObjectId())
+                        .objectClass(taggedObjectDTO.getObjectClass())
+                        .tagId(tag.getId())
+                        .build()
+        );
     }
 
     public void removeObjectTag(TaggedObjectDTO taggedObjectDTO) {
-    	Tag tag = tagRepository.findByName(taggedObjectDTO.getTag());
-    	if (tag != null) {
-    		taggedObjectRepository.deleteByTagIdAndObjectIdAndObjectClass(
-    				tag.getId(), taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass());
-    	}
+        Tag tag = tagRepository.findByName(taggedObjectDTO.getTag());
+        if (tag != null) {
+            TaggedObject taggedObject = taggedObjectRepository.findByObjectIdAndObjectClassAndTagId(taggedObjectDTO.getObjectId(), taggedObjectDTO.getObjectClass(), tag.getId());
+            if (taggedObject != null) {
+                taggedObjectRepository.delete(taggedObject);
+            }
+        }
     }
 
     public List<TagDTO> getAllTags() {
         List<Tag> result = (List<Tag>) tagRepository.findAll();
-        return result.stream().map(modelMapper::map).collect(Collectors.toList());
+        return result.stream().map(modelMapper::map).toList();
     }
 
-    public List<TagDTO> getTagsByObjectClass(String objectClass) {
+    public List<TagDTO> getTagsByObjectClass(ObjectClass objectClass) {
         List<Tag> result = tagRepository.findByObjectClass(objectClass);
-        return result.stream().map(modelMapper::map).collect(Collectors.toList());
+        return result.stream().map(modelMapper::map).toList();
     }
 
-    public List<TagDTO> getTagsByObjectIdAndObjectClass(Long objectId, String objectClass) {
+    public List<TagDTO> getTagsByObjectIdAndObjectClass(Long objectId, ObjectClass objectClass) {
         List<Tag> result = tagRepository.findByObjectIdAndObjectClass(objectId, objectClass);
-        return result.stream().map(modelMapper::map).collect(Collectors.toList());
+        return result.stream().map(modelMapper::map).toList();
     }
 
-    public Map<Long, List<TagDTO>> getTagsByObjectIdsAndObjectClass(Set<Long> objectIds, String objectClass) {
+    public Map<Long, List<TagDTO>> getTagsByObjectIdsAndObjectClass(Set<Long> objectIds, ObjectClass objectClass) {
     	List<TaggedObject> taggedObjects = taggedObjectRepository.findByObjectIdInAndObjectClass(objectIds, objectClass);
 
     	Set<Long> tagIds = taggedObjects.stream().map(TaggedObject::getTagId).collect(Collectors.toSet());
@@ -90,9 +99,9 @@ public class TagService {
     	Map<Long, List<TagDTO>> mappedTags = new HashMap<>();
     	for (Long objectId: objectIds) {
     		List<TagDTO> objectTags = taggedObjects.stream()
-    				.filter(to -> to.getObjectId() == objectId)
+    				.filter(to -> to.getObjectId().equals(objectId))
     				.map(to -> tagMap.get(to.getTagId()))
-    				.map(t -> modelMapper.map(t)).toList();
+    				.map(modelMapper::map).toList();
     		mappedTags.put(objectId, objectTags);
     	}
     	return mappedTags;

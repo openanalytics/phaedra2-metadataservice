@@ -20,21 +20,28 @@
  */
 package eu.openanalytics.phaedra.metadataservice.model;
 
+import eu.openanalytics.phaedra.metadataservice.enumeration.Actor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
+import javax.validation.constraints.NotNull;
+
 @Data
-@NoArgsConstructor
+@Builder
 @Table("hca_tag")
 public class Tag {
 
 	@Id
     private Long id;
+    @NotNull
     private String name;
-
-    public Tag(String name) {
-        this.name = name;
-    }
+    @NotNull
+    @Builder.Default
+    private Actor actor = Actor.USER;
+    @NotNull
+    @Builder.Default
+    private String color = "#4caf50";
 }
