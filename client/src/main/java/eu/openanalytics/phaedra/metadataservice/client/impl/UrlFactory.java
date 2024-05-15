@@ -22,22 +22,26 @@ package eu.openanalytics.phaedra.metadataservice.client.impl;
 
 public class UrlFactory {
 
-    private static final String METADATA_SERVICE = "http://phaedra-metadata-service:8080/phaedra/metadata-service";
+    private String baseURL;
+    
+    public UrlFactory(String baseURL) {
+    	this.baseURL = baseURL;
+	}
 
-    public static String tags(String objectClass, long objectId) {
-        return String.format("%s/tags?objectId=%s&objectClass=%s", METADATA_SERVICE, objectId, objectClass);
+    public String tags(String objectClass, long objectId) {
+        return String.format("%s/tags?objectId=%s&objectClass=%s", baseURL, objectId, objectClass);
     }
 
-    public static String properties(String objectClass, long objectId) {
-        return String.format("%s/properties?objectId=%s&objectClass=%s", METADATA_SERVICE, objectId, objectClass);
+    public String properties(String objectClass, long objectId) {
+        return String.format("%s/properties?objectId=%s&objectClass=%s", baseURL, objectId, objectClass);
     }
 
-    public static String tags() {
-        return String.format("%s/tags", METADATA_SERVICE);
+    public String tags() {
+        return String.format("%s/tags", baseURL);
     }
 
-    public static String properties() {
-        return String.format("%s/properties", METADATA_SERVICE);
+    public String properties() {
+        return String.format("%s/properties", baseURL);
     }
 
 
