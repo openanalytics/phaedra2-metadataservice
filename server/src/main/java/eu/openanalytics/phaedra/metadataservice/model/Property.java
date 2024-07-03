@@ -20,15 +20,16 @@
  */
 package eu.openanalytics.phaedra.metadataservice.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import eu.openanalytics.phaedra.metadataservice.enumeration.Actor;
-import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
-import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import eu.openanalytics.phaedra.metadataservice.enumeration.Actor;
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 @Data
 @Table("hca_property")

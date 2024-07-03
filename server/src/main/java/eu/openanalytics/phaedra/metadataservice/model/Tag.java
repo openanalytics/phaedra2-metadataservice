@@ -20,14 +20,13 @@
  */
 package eu.openanalytics.phaedra.metadataservice.model;
 
-import eu.openanalytics.phaedra.metadataservice.enumeration.Actor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-import javax.validation.constraints.NotNull;
+import eu.openanalytics.phaedra.metadataservice.enumeration.Actor;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Data;
 
 @Data
 @Builder
