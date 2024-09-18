@@ -30,7 +30,9 @@ public class MetaDataServiceHttpGraphQlClient implements MetadataServiceGraphQlC
         .defaultHeader(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", bearerToken))
         .build();
 
-    this.httpGraphQlClient = HttpGraphQlClient.create(this.webClient);
+    this.httpGraphQlClient = HttpGraphQlClient.builder(this.webClient)
+        .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", bearerToken))
+        .build();
   }
 
 
