@@ -20,6 +20,8 @@
  */
 package eu.openanalytics.phaedra.metadataservice.client;
 
+import eu.openanalytics.phaedra.metadataservice.dto.MetadataDTO;
+import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +33,9 @@ public interface MetadataServiceClient {
     void addTags(String objectClass, long objectId, List<String> tags);
     void addProperties(String objectClass, long objectId, Map<String, String> properties);
 
-	List<TagDTO> getTags(String objectClass, long objectId);
+	  List<TagDTO> getTags(String objectClass, long objectId);
     List<PropertyDTO> getProperties(String objectClass, long objectId);
+
+    List<MetadataDTO> getMetadata(List<Long> objectIds, ObjectClass objectClass);
 
 }

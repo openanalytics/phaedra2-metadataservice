@@ -23,7 +23,7 @@ package eu.openanalytics.phaedra.metadataservice.client.impl;
 public class UrlFactory {
 
     private String baseURL;
-    
+
     public UrlFactory(String baseURL) {
     	this.baseURL = baseURL;
 	}
@@ -45,4 +45,7 @@ public class UrlFactory {
     }
 
 
+    public String metadata() {
+        return String.format("%s/metadata", baseURL);
+    }
 }
