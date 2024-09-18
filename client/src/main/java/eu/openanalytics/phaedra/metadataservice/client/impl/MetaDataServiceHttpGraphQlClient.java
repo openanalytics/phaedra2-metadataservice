@@ -36,7 +36,7 @@ public class MetaDataServiceHttpGraphQlClient implements MetadataServiceGraphQlC
   public List<MetadataDTO> getMetadata(List<Long> objectIds, ObjectClass objectClass) {
     String document = """
         { 
-          metadata(objectIds: %s, objectClass: "%s") { 
+          metadata(objectIds: %s, objectClass: %s) { 
             objectId
             tags {
               tag
