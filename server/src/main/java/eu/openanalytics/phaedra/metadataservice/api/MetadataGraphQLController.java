@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
@@ -26,7 +27,7 @@ public class MetadataGraphQLController {
   }
 
   @QueryMapping
-  public List<MetadataDTO> metadata(List<Long> objectIds, ObjectClass objectClass) {
+  public List<MetadataDTO> metadata(@Argument List<Long> objectIds, @Argument ObjectClass objectClass) {
     Set<Long> objectIdsSet = new HashSet<>(objectIds);
     Map<Long, List<TagDTO>> tags = tagService.getTags(objectIdsSet, objectClass);
     Map<Long, List<PropertyDTO>> properties = propertyService.getProperties(objectIdsSet, objectClass);
