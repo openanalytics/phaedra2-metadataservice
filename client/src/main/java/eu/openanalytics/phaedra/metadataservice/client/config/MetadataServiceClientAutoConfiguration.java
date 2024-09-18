@@ -21,7 +21,8 @@
 package eu.openanalytics.phaedra.metadataservice.client.config;
 
 import eu.openanalytics.phaedra.metadataservice.client.MetadataServiceClient;
-import eu.openanalytics.phaedra.metadataservice.client.impl.GraphQLMetaDataServiceClient;
+import eu.openanalytics.phaedra.metadataservice.client.MetadataServiceGraphQlClient;
+import eu.openanalytics.phaedra.metadataservice.client.impl.MetaDataServiceHttpGraphQlClient;
 import eu.openanalytics.phaedra.metadataservice.client.impl.HttpMetadataServiceClient;
 import eu.openanalytics.phaedra.util.PhaedraRestTemplate;
 import eu.openanalytics.phaedra.util.auth.IAuthorizationService;
@@ -35,15 +36,12 @@ import org.springframework.core.env.Environment;
 public class MetadataServiceClientAutoConfiguration {
 
     @Bean
-    @Primary
-    @Qualifier("httpClient")
     public MetadataServiceClient metadataServiceClient(PhaedraRestTemplate phaedraRestTemplate, IAuthorizationService authService, Environment environment) {
         return new HttpMetadataServiceClient(phaedraRestTemplate, authService, environment);
     }
 
     @Bean
-    @Qualifier("graphQLClient")
-    public MetadataServiceClient metadataServiceGraphQLClient(IAuthorizationService authService, Environment environment) {
-        return new GraphQLMetaDataServiceClient(authService, environment);
+    public MetadataServiceGraphQlClient metadataServiceGraphQLClient(IAuthorizationService authService, Environment environment) {
+        return new MetaDataServiceHttpGraphQlClient(authService, environment);
     }
 }
