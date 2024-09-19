@@ -61,10 +61,10 @@ public class  TagController {
     		if (objectClass == null) {
     			tags = tagService.getAllTags();
     		} else {
-    			tags = tagService.getTagsByObjectClass(objectClass);
+    			tags = tagService.getTags(objectClass);
     		}
     	} else {
-    		tags = tagService.getTagsByObjectIdAndObjectClass(objectId, objectClass);
+    		tags = tagService.getTags(objectId, objectClass);
     	}
 
         return new ResponseEntity<>(tags, HttpStatus.OK);
