@@ -38,25 +38,9 @@ public class TagGraphQLController {
         this.tagService = tagService;
     }
 
-//    public ResponseEntity<?> addTag(@RequestBody TaggedObjectDTO taggedObject) {
-//        tagService.addObjectTag(taggedObject);
-//        return new ResponseEntity<>(HttpStatus.CREATED);
-//    }
-
-//    public ResponseEntity<?> removeTag(@RequestBody TaggedObjectDTO taggedObject) {
-//        tagService.removeObjectTag(taggedObject);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-
-//    @QueryMapping
-//    public List<TagDTO> getTagsByObjectId(@Argument long objectId) {
-//        List<TagDTO> result = tagService.getTagsByObjectId(objectId);
-//        return result;
-//    }
-
     @QueryMapping
     public List<TagDTO> getTagsByObjectIdAndObjectClass(@Argument long objectId, @Argument ObjectClass objectClass) {
-    	List<TagDTO> result = tagService.getTagsByObjectIdAndObjectClass(objectId, objectClass);
+    	List<TagDTO> result = tagService.getTags(objectId, objectClass);
         return result;
     }
 }

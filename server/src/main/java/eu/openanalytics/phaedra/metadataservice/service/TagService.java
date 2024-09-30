@@ -79,17 +79,17 @@ public class TagService {
         return result.stream().map(modelMapper::map).toList();
     }
 
-    public List<TagDTO> getTagsByObjectClass(ObjectClass objectClass) {
+    public List<TagDTO> getTags(ObjectClass objectClass) {
         List<Tag> result = tagRepository.findByObjectClass(objectClass);
         return result.stream().map(modelMapper::map).toList();
     }
 
-    public List<TagDTO> getTagsByObjectIdAndObjectClass(Long objectId, ObjectClass objectClass) {
+    public List<TagDTO> getTags(Long objectId, ObjectClass objectClass) {
         List<Tag> result = tagRepository.findByObjectIdAndObjectClass(objectId, objectClass);
         return result.stream().map(modelMapper::map).toList();
     }
 
-    public Map<Long, List<TagDTO>> getTagsByObjectIdsAndObjectClass(Set<Long> objectIds, ObjectClass objectClass) {
+    public Map<Long, List<TagDTO>> getTags(Set<Long> objectIds, ObjectClass objectClass) {
     	List<TaggedObject> taggedObjects = taggedObjectRepository.findByObjectIdInAndObjectClass(objectIds, objectClass);
 
     	Set<Long> tagIds = taggedObjects.stream().map(TaggedObject::getTagId).collect(Collectors.toSet());

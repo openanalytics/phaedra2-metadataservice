@@ -30,6 +30,13 @@ type PropertyDTO {
     actor: Actor
 }
 
+type MetadataDTO {
+    objectId: ID
+    tags: [TagDTO]
+    properties: [PropertyDTO]
+}
+
 type Query {
     getTagsByObjectIdAndObjectClass: [TagDTO]
+    metadata(objectIds: [ID] = [], objectClass: ObjectClass = null): [MetadataDTO]
 }

@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/metadata")
@@ -52,7 +51,7 @@ public class MetadataController {
 
     	if (objectIds.isEmpty()) return ResponseEntity.badRequest().body("Must specify at least one object ID");
 
-    	Map<Long, List<TagDTO>> tagsPerObject = tagService.getTagsByObjectIdsAndObjectClass(objectIds, objectClass);
+    	Map<Long, List<TagDTO>> tagsPerObject = tagService.getTags(objectIds, objectClass);
     	Map<Long, List<PropertyDTO>> propertiesPerObject = propertyService.getProperties(objectIds, objectClass);
 
     	List<Map<?,?>> response = new ArrayList<>();

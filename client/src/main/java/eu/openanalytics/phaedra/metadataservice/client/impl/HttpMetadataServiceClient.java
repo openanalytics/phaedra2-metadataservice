@@ -20,11 +20,16 @@
  */
 package eu.openanalytics.phaedra.metadataservice.client.impl;
 
+import eu.openanalytics.phaedra.metadataservice.dto.MetadataDTO;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Data;
 import org.springframework.core.env.Environment;
+import org.springframework.graphql.GraphQlResponse;
+import org.springframework.graphql.client.HttpGraphQlClient;
+import org.springframework.graphql.client.WebGraphQlClient;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -45,10 +50,10 @@ public class HttpMetadataServiceClient implements MetadataServiceClient {
     private final IAuthorizationService authService;
 
     private final UrlFactory urlFactory;
-    
+
     private static final String PROP_BASE_URL = "phaedra.metadata-service.base-url";
     private static final String DEFAULT_BASE_URL = "http://phaedra-metadata-service:8080/phaedra/metadata-service";
-    
+
     public HttpMetadataServiceClient(RestTemplate restTemplate, IAuthorizationService authService, Environment environment) {
         this.restTemplate = restTemplate;
         this.authService = authService;
@@ -83,6 +88,11 @@ public class HttpMetadataServiceClient implements MetadataServiceClient {
     public List<PropertyDTO> getProperties(String objectClass, long objectId) {
         var response = restTemplate.exchange(urlFactory.properties(objectClass, objectId), HttpMethod.GET, new HttpEntity<String>(makeHttpHeaders()), PropertyDTO[].class);
         return Arrays.stream(response.getBody()).toList();
+    }
+
+    @Override
+    public List<MetadataDTO> getMetadata(List<Long> objectIds, ObjectClass objectClass) {
+        return List.of();
     }
 
     private HttpHeaders makeHttpHeaders() {
