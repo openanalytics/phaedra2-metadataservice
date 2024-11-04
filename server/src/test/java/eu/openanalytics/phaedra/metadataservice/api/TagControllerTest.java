@@ -74,7 +74,7 @@ public class TagControllerTest {
                 .tag("protTag1")
                 .build();
 
-        String requestBody = objectMapper.writeValueAsString(taggedObject);
+        String requestBody = objectMapper.writeValueAsString(List.of(taggedObject));
         this.mockMvc.perform(post("/tags").contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andDo(print())
                 .andExpect(status().isCreated());

@@ -39,9 +39,11 @@ public class  TagController {
     private TagService tagService;
 
     @PostMapping
-    public ResponseEntity<?> addTag(@RequestBody TaggedObjectDTO taggedObject) {
-        tagService.addObjectTag(taggedObject);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<?> addTags(@RequestBody List<TaggedObjectDTO> taggedObjects) {
+      for (TaggedObjectDTO taggedObjectDTO : taggedObjects) {
+        tagService.addObjectTag(taggedObjectDTO);
+      }
+      return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping
