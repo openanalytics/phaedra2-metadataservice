@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <artifactId>phaedra2-metadataservice</artifactId>
-    <name>phaedra2-metadataservice</name>
+    <name>Phaedra2 Meta-Data Service</name>
 	<version>2.4.0-SNAPSHOT</version>
 
     <modules>
