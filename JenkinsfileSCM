@@ -11,18 +11,34 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '3'))
     }
 
+    parameters {
+        string(name: 'BUILD_TYPE', defaultValue: 'default')
+    }
+
     stages {
+		stage('Initialize') {
+		    when {
+			    branch 'master'
+                expression { params.BUILD_TYPE != 'product_release' }
+            }
+            steps {
+                script { currentBuild.result = 'ABORTED' }
+                error 'Build of the master branch can only be invoked as part of the product_release'
+            }
+	    }
 
         stage('Prepare environment') {
             steps {
-                script {
-                    env.GROUP_ID = sh(returnStdout: true, script: "mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.groupId -q -DforceStdout").trim()
-                    env.ARTIFACT_ID = sh(returnStdout: true, script: "mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.artifactId -q -DforceStdout").trim()
-                    env.VERSION = sh(returnStdout: true, script: "mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout").trim()
-                    env.REGISTRY = "registry.openanalytics.eu"
-                    env.MVN_ARGS = "-Dmaven.repo.local=/home/jenkins/maven-repository --batch-mode"
-                    env.MVN_EXLCUDE_PARENT = ""
-                }
+				container('builder') {
+	                script {
+	                    env.GROUP_ID = sh(returnStdout: true, script: "mvn -B help:evaluate -Dexpression=project.groupId -q -DforceStdout").trim()
+	                    env.ARTIFACT_ID = sh(returnStdout: true, script: "mvn -B help:evaluate -Dexpression=project.artifactId -q -DforceStdout").trim()
+	                    env.VERSION = sh(returnStdout: true, script: "mvn -B help:evaluate -Dexpression=project.version -q -DforceStdout").trim()
+	                    env.REGISTRY = "registry.openanalytics.eu"
+	                    env.MVN_ARGS = "-Dmaven.repo.local=/home/jenkins/maven-repository --batch-mode"
+	                    env.MVN_EXLCUDE_PARENT = ""
+	                }
+	            }
             }
 
         }
