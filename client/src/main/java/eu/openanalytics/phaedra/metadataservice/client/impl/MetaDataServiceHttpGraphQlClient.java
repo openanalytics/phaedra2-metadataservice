@@ -49,10 +49,8 @@ public class MetaDataServiceHttpGraphQlClient implements MetadataServiceGraphQlC
         }
         """.formatted(objectIds, objectClass);
 
-    String bearerToken = authService.getCurrentBearerToken();
-    logger.info("authService bearerToken: {}", bearerToken);
     HttpGraphQlClient httpGraphQlClient = HttpGraphQlClient.builder(this.webClient)
-        .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", bearerToken))
+        .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", authService.getCurrentBearerToken()))
         .build();
     MetadataDTO[] result = httpGraphQlClient
         .document(document)
