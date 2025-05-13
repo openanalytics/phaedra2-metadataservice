@@ -40,10 +40,18 @@ public class  TagController {
 
     @PostMapping
     public ResponseEntity<?> addTags(@RequestBody List<TaggedObjectDTO> taggedObjects) {
-      for (TaggedObjectDTO taggedObjectDTO : taggedObjects) {
-        tagService.addObjectTag(taggedObjectDTO);
-      }
-      return new ResponseEntity<>(HttpStatus.CREATED);
+        boolean allSuccessful = true;
+        for (TaggedObjectDTO taggedObjectDTO : taggedObjects) {
+            boolean success = tagService.addObjectTag(taggedObjectDTO);
+            if (!success) {
+                allSuccessful = false;
+            }
+        }
+
+        if (!allSuccessful) {
+            return new ResponseEntity<>("One or more tagged objects already exist", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping
