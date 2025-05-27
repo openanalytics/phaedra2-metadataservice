@@ -49,10 +49,21 @@ public class TagService {
         this.modelMapper = modelMapper;
     }
 
-    public void addObjectTag(TaggedObjectDTO taggedObjectDTO) {
+    public boolean addObjectTag(TaggedObjectDTO taggedObjectDTO) {
         Tag tag = tagRepository.findByName(taggedObjectDTO.getTag());
         if (tag == null) {
             tag = tagRepository.save(Tag.builder().name(taggedObjectDTO.getTag()).actor(taggedObjectDTO.getActor()).build());
+        }
+
+        // Check if the tagged object already exists
+        TaggedObject existingTaggedObject = taggedObjectRepository.findByObjectIdAndObjectClassAndTagId(
+                taggedObjectDTO.getObjectId(),
+                taggedObjectDTO.getObjectClass(),
+                tag.getId());
+
+        if (existingTaggedObject != null) {
+            // Tagged object already exists
+            return false;
         }
 
         taggedObjectRepository.save(
@@ -62,6 +73,7 @@ public class TagService {
                         .tagId(tag.getId())
                         .build()
         );
+        return true;
     }
 
     public void removeObjectTag(TaggedObjectDTO taggedObjectDTO) {
