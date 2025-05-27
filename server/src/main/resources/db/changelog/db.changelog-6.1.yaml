@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      changes:
+        - sql:
+            sql: alter type objectclass add value if not exists 'FORMULA'
+        - sql:
+            sql: alter type objectclass add value if not exists 'CURVE'
+        - sql:
+            sql: alter type objectclass add value if not exists 'CHART'
+        - sql:
+            sql: alter type objectclass add value if not exists 'IMAGE'
+        - sql:
+            sql: alter type objectclass add value if not exists 'RENDER_CONFIG'
+        - sql:
+            sql: alter type objectclass add value if not exists 'CAPTURE_SCRIPT'
+        - sql:
+            sql: alter type objectclass add value if not exists 'CAPTURE_CONFIG'
+        - sql:
+            sql: alter type objectclass add value if not exists 'PIPELINE'
+        - sql:
+            sql: alter table hca_property alter column object_class type objectclass using object_class::objectclass
+        - sql:
+            sql: alter table hca_tagged_object alter column object_class type objectclass using object_class::objectclass
