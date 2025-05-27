@@ -1,6 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 1
+      author: sberberovic
       changes:
         - sql:
             sql: alter type objectclass add value if not exists 'FORMULA'
