@@ -30,7 +30,7 @@ public enum ObjectClass {
     PLATE_TEMPLATE,
     WELL_TEMPLATE,
     MEASUREMENT,
-    FORMULAS,
+    FORMULA,
     CURVE,
     CHART,
     IMAGE,
