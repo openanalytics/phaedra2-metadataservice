@@ -20,6 +20,9 @@
  */
 package eu.openanalytics.phaedra.metadataservice.client.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class UrlFactory {
 
     private String baseURL;
@@ -45,7 +48,14 @@ public class UrlFactory {
     }
 
 
-    public String metadata() {
-        return String.format("%s/metadata", baseURL);
+    public String metadata(String objectClass, List<Long> objectIds) {
+        String objectIdsParam = objectIds.stream()
+            .map(String::valueOf)
+            .collect(Collectors.joining(","));
+
+        return String.format("%s/metadata?objectClass=%s&objectIds=%s",
+            baseURL,
+            objectClass,
+            objectIdsParam);
     }
 }
