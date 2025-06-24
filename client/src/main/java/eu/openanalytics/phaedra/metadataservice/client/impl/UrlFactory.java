@@ -53,7 +53,7 @@ public class UrlFactory {
             .map(String::valueOf)
             .collect(Collectors.joining(","));
 
-        return String.format("%s/metadata?objectClass=%s&objectIds=%s",
+        return String.format("%s/metadata?objectClass=%s&objectId=%s",
             baseURL,
             objectClass,
             objectIdsParam);
