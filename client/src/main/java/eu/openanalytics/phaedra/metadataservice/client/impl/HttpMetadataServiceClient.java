@@ -1,7 +1,7 @@
 /**
  * Phaedra II
  *
- * Copyright (C) 2016-2024 Open Analytics
+ * Copyright (C) 2016-2025 Open Analytics
  *
  * ===========================================================================
  *
@@ -20,28 +20,22 @@
  */
 package eu.openanalytics.phaedra.metadataservice.client.impl;
 
-import eu.openanalytics.phaedra.metadataservice.dto.MetadataDTO;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import lombok.Data;
-import org.springframework.core.env.Environment;
-import org.springframework.graphql.GraphQlResponse;
-import org.springframework.graphql.client.HttpGraphQlClient;
-import org.springframework.graphql.client.WebGraphQlClient;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-
 import eu.openanalytics.phaedra.metadataservice.client.MetadataServiceClient;
+import eu.openanalytics.phaedra.metadataservice.dto.MetadataDTO;
 import eu.openanalytics.phaedra.metadataservice.dto.PropertyDTO;
 import eu.openanalytics.phaedra.metadataservice.dto.TagDTO;
 import eu.openanalytics.phaedra.metadataservice.dto.TaggedObjectDTO;
 import eu.openanalytics.phaedra.metadataservice.enumeration.ObjectClass;
 import eu.openanalytics.phaedra.util.auth.IAuthorizationService;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 @Component
 public class HttpMetadataServiceClient implements MetadataServiceClient {
@@ -92,7 +86,8 @@ public class HttpMetadataServiceClient implements MetadataServiceClient {
 
     @Override
     public List<MetadataDTO> getMetadata(List<Long> objectIds, ObjectClass objectClass) {
-        return List.of();
+        var response = restTemplate.exchange(urlFactory.metadata(objectClass.name(), objectIds), HttpMethod.GET, new HttpEntity<String>(makeHttpHeaders()), MetadataDTO[].class);
+        return Arrays.stream(response.getBody()).toList();
     }
 
     private HttpHeaders makeHttpHeaders() {

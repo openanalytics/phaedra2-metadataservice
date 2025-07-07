@@ -1,7 +1,7 @@
 /**
  * Phaedra II
  *
- * Copyright (C) 2016-2024 Open Analytics
+ * Copyright (C) 2016-2025 Open Analytics
  *
  * ===========================================================================
  *
@@ -29,5 +29,13 @@ public enum ObjectClass {
     PROJECT,
     PLATE_TEMPLATE,
     WELL_TEMPLATE,
-    MEASUREMENT
+    MEASUREMENT,
+    FORMULA,
+    CURVE,
+    CHART,
+    IMAGE,
+    RENDER_CONFIG,
+    CAPTURE_SCRIPT,
+    CAPTURE_CONFIG,
+    PIPELINE
 }

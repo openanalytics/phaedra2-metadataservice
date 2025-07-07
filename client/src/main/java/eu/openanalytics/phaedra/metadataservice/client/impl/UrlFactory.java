@@ -1,7 +1,7 @@
 /**
  * Phaedra II
  *
- * Copyright (C) 2016-2024 Open Analytics
+ * Copyright (C) 2016-2025 Open Analytics
  *
  * ===========================================================================
  *
@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.apache.org/licenses/>
  */
 package eu.openanalytics.phaedra.metadataservice.client.impl;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UrlFactory {
 
@@ -45,7 +48,14 @@ public class UrlFactory {
     }
 
 
-    public String metadata() {
-        return String.format("%s/metadata", baseURL);
+    public String metadata(String objectClass, List<Long> objectIds) {
+        String objectIdsParam = objectIds.stream()
+            .map(String::valueOf)
+            .collect(Collectors.joining(","));
+
+        return String.format("%s/metadata?objectClass=%s&objectId=%s",
+            baseURL,
+            objectClass,
+            objectIdsParam);
     }
 }
